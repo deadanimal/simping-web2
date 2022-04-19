@@ -106,12 +106,12 @@
               </ul>
             </div>
             <div class="mt-12 md:mt-0">
-              <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Support</h3>
+              <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Miscellenous</h3>
               <ul role="list" class="mt-4 space-y-4">
                 <li v-for="item in footerNavigation.support" :key="item.name">
-                  <a :href="item.href" class="text-base text-gray-300 hover:text-white">
+                  <RouterLink :to="item.href" class="text-base text-gray-300 hover:text-white">
                     {{ item.name }}
-                  </a>
+                  </RouterLink>
                 </li>
               </ul>
             </div>
@@ -140,8 +140,8 @@
           </div> -->
         </div>
         <div class="mt-8 xl:mt-0">
-          <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">About Simping Labs</h3>
-          <p class="mt-4 text-base text-gray-300">The latest news, articles, and resources, sent to your inbox weekly.</p>
+          <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">About Simping</h3>
+          <p class="mt-4 text-base text-gray-300">Simping is all about NFTs and social media, where you can mint, trade, and tokenise NFTs. Other advanced features are included in the roadmap.</p>
           <!-- <form class="mt-4 sm:flex sm:max-w-md">
             <label for="email-address" class="sr-only">Email address</label>
             <input type="email" name="email-address" id="email-address" autocomplete="email" required="" class="appearance-none min-w-0 w-full bg-white border border-transparent rounded-md py-2 px-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white focus:border-white focus:placeholder-gray-400" placeholder="Enter your email" />
@@ -200,10 +200,10 @@ const footerNavigation = {
     { name: 'Insights', href: '#' },
   ],
   support: [
-    { name: 'Pricing', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
-    { name: 'API Status', href: '#' },
+    { name: 'Privacy', href: 'privacy' },
+    { name: 'Terms', href: 'terms' },
+    { name: 'Guides', href: 'guides' },
+    { name: 'Status', href: 'status' },
   ],
   company: [
     { name: 'About', href: '#' },

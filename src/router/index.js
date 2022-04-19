@@ -9,6 +9,10 @@ import Login from '../views/Login.vue'
 import loginViaWeb3 from '../views/LoginViaWeb3.vue'
 
 import HomeView from '../views/HomeView.vue'
+import PrivacyView from '../views/PrivacyView.vue'
+import TermsView from '../views/TermsView.vue'
+import GuidesView from '../views/GuidesView.vue'
+import StatusView from '../views/StatusView.vue'
 
 import { useUserStore } from '@/stores/user';
 
@@ -20,6 +24,26 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: PrivacyView
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: TermsView
+    },   
+    {
+      path: '/guides',
+      name: 'guides',
+      component: GuidesView
+    },   
+    {
+      path: '/status',
+      name: 'status',
+      component: StatusView
+    },            
     {
       path: '/dashboard',
       name: 'dashboard',
