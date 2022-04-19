@@ -9,7 +9,7 @@ export const useUserStore = defineStore({
   state: () => ({
 
     isLoggedIn: false,
-    publicAddress: "0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45"g,
+    publicAddress: "0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45",
     userAuthKey: null,
     balance: null
 
