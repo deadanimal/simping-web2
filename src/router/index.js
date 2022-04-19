@@ -6,6 +6,7 @@ import Factory from '../views/Factory.vue'
 import Tokenator from '../views/Tokenator.vue'
 
 import Login from '../views/Login.vue'
+import loginViaWeb3 from '../views/loginViaWeb3.vue'
 
 import HomeView from '../views/HomeView.vue'
 
@@ -40,8 +41,13 @@ const router = createRouter({
       name: 'tokenator',
       component: Tokenator
     },   
-    
-    
+
+    {
+      path: '/login-via-web3',
+      name: 'loginViawWeb3',
+      component: loginViaWeb3
+    },    
+        
     {
       path: '/login',
       name: 'login',
