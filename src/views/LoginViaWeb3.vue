@@ -8,9 +8,8 @@ signer={{signer}}
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
 
-export default defineComponent({
+export default {
     setup() {
         return {
             address: null,
@@ -42,5 +41,5 @@ export default defineComponent({
 
         console.log('address:', address);
     },
-})
+}
 </script>
