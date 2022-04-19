@@ -11,15 +11,14 @@ signer={{signer}}
 
 export default {
     setup() {
+    },
+    data() {
         return {
             address: null,
             ts: null,
             sig: null,
             signer: null
         }
-    },
-    data() {
-
     },
     mounted() {
         const params = this.$route.query;
