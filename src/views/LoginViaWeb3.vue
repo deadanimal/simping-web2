@@ -1,9 +1,46 @@
 <template>
 Explore page
 
-url =login-via-web3?
-address=0xfE928e0209cBeE371c80753D873d80535A612c84&
-ts=1650365965&
-sig=0xa784659695bab10ea7ad41493d0725003bae5d20ab2f5d52ee773f2ac5b05fd53f64368525fe4f797107a8b3036a19ca9af06abc0eaaf88778022451fd9cc9fa1c&
-signer=web
+address= {{address}} <br/>
+ts= {{ts}} <br/>
+sig={{sig}} <br/>
+signer={{signer}}
 </template>
+
+<script>
+import { defineComponent } from '@vue/composition-api'
+
+export default defineComponent({
+    setup() {
+        return {
+            address: null,
+            ts: null,
+            sig: null,
+            signer: null
+        }
+    },
+    data() {
+
+    },
+    mounted() {
+        const params = this.$route.query;
+        
+        const address = params['address'];
+        const ts = params['ts'];
+        const sig = params['sig'];
+        const signer = params['signer'];
+
+        this.address = address;
+        this.ts = ts;
+        this.sig = sig;
+        this.signer = signer
+        
+        localStorage.setItem("wAddress", address);
+        localStorage.setItem("wTs", ts);
+        localStorage.setItem("wSig", sig);
+        localStorage.setItem("wSigner", signer);
+
+        console.log('address:', address);
+    },
+})
+</script>
