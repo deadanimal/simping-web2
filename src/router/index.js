@@ -6,7 +6,7 @@ import Factory from '../views/Factory.vue'
 import Tokenator from '../views/Tokenator.vue'
 
 import Login from '../views/Login.vue'
-import loginViaWeb3 from '../views/loginViaWeb3.vue'
+import loginViaWeb3 from '../views/LoginViaWeb3.vue'
 
 import HomeView from '../views/HomeView.vue'
 
