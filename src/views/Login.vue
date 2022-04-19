@@ -1,0 +1,4 @@
+<template>
+Explore page
+
+</template>
