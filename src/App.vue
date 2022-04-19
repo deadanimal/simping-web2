@@ -290,6 +290,7 @@ const footerNavigation = {
 }
 
 
+import { useUserStore } from '@/stores/user';
 
 export default {
   setup() {
@@ -299,7 +300,17 @@ export default {
       navigation,
       userNavigation,      
     }
-  },  
+  }, 
+  mounted() {
+        const store = useUserStore();
+        const address = localStorage.getItem("wAddress");
+        if (address) {
+          const ts = localStorage.getItem("wTs");
+          const sig = localStorage.getItem("wSig");
+          const signer = localStorage.getItem("wSigner");
+          store.updateWallet(address, ts, sig, signer);
+        }
+  }, 
   components: {
     Disclosure,
     DisclosureButton,

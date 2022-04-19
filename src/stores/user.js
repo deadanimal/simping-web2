@@ -44,7 +44,8 @@ export const useUserStore = defineStore({
       this.walletSig = sig;
       this.walletSigner = signer;
       this.isLoggedIn = true;
-      console.log('Store updated: ', this.walletAddress);
+      
+      console.log('Store Updated. Address: ', this.walletAddress);
     }
 
   }

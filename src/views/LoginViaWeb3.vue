@@ -1,15 +1,16 @@
 <template>
-Explore page
+Login successful
 
-address= {{address}} <br/>
-ts= {{ts}} <br/>
-sig={{sig}} <br/>
-signer={{signer}}
+Address= {{address}} <br/>
+Ts= {{ts}} <br/>
+Sig={{sig}} <br/>
+Signer={{signer}}
 </template>
 
 <script>
 
 import { useUserStore } from '@/stores/user';
+import router from "@/router";
 
 export default {
     setup() {
@@ -44,7 +45,7 @@ export default {
         localStorage.setItem("wSig", sig);
         localStorage.setItem("wSigner", signer);
 
-        console.log('address:', address);
+        router.push('/dashboard');
     },
 }
 </script>
