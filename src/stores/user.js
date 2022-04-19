@@ -8,10 +8,14 @@ export const useUserStore = defineStore({
 
   state: () => ({
 
-    isLoggedIn: false,
-    publicAddress: "0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45",
+    isLoggedIn: false,    
     userAuthKey: null,
-    balance: null
+    balance: null,
+
+    walletAddress: null,
+    walletTs: null,
+    walletSig: null,
+    walletSigner: null,
 
   }),
 
@@ -32,6 +36,15 @@ export const useUserStore = defineStore({
         let balance = await provider.getBalance(this.publicAddress)
         this.balance = ethers.utils.formatEther(balance)
         console.log('akksksks', this.balance)   
+    },
+
+    updateWallet(address, ts, sig, signer) {
+      this.walletAddress = address;
+      this.walletTs = ts;
+      this.walletSig = sig;
+      this.walletSigner = signer;
+      this.isLoggedIn = true;
+      console.log('Store updated: ', this.walletAddress);
     }
 
   }

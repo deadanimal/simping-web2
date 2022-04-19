@@ -9,6 +9,8 @@ signer={{signer}}
 
 <script>
 
+import { useUserStore } from '@/stores/user';
+
 export default {
     setup() {
     },
@@ -31,7 +33,11 @@ export default {
         this.address = address;
         this.ts = ts;
         this.sig = sig;
-        this.signer = signer
+        this.signer = signer;
+
+        const store = useUserStore();
+
+        store.updateWallet(address, ts, sig, signer);
         
         localStorage.setItem("wAddress", address);
         localStorage.setItem("wTs", ts);
