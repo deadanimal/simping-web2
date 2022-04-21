@@ -4,6 +4,8 @@ import Dashboard from '../views/Dashboard.vue'
 import Explore from '../views/Explore.vue'
 import Factory from '../views/Factory.vue'
 import Tokenator from '../views/Tokenator.vue'
+import Reload from '../views/Reload.vue'
+import Swap from '../views/Swap.vue'
 
 import Login from '../views/Login.vue'
 import loginViaWeb3 from '../views/LoginViaWeb3.vue'
@@ -51,6 +53,12 @@ const router = createRouter({
       component: Dashboard
     },     
     {
+      path: '/reload',
+      name: 'reload',
+      meta: { requiresAuth: true },
+      component: Reload
+    },      
+    {
       path: '/explore',
       name: 'explore',
       component: Explore
@@ -58,11 +66,13 @@ const router = createRouter({
     {
       path: '/factory',
       name: 'factory',
+      meta: { requiresAuth: true },
       component: Factory
     },     
     {
       path: '/tokenator',
       name: 'tokenator',
+      meta: { requiresAuth: true },
       component: Tokenator
     },   
 

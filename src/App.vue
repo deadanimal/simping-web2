@@ -65,7 +65,7 @@
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <DisclosureButton v-for="item in navigation" :key="item.name" as="a" :href="item.href" :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'block px-3 py-2 rounded-md text-base font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}</DisclosureButton>
       </div>
-      <div class="pt-4 pb-3 border-t border-gray-700">
+      <!-- <div class="pt-4 pb-3 border-t border-gray-700">
         <div class="flex items-center px-5 sm:px-6">
           <div class="flex-shrink-0">
             <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
@@ -82,7 +82,7 @@
         <div class="mt-3 px-2 space-y-1 sm:px-3">
           <DisclosureButton v-for="item in userNavigation" :key="item.name" as="a" :href="item.href" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">{{ item.name }}</DisclosureButton>
         </div>
-      </div>
+      </div> -->
     </DisclosurePanel>
   </Disclosure>
 
@@ -121,9 +121,9 @@
               <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
               <ul role="list" class="mt-4 space-y-4">
                 <li v-for="item in footerNavigation.company" :key="item.name">
-                  <a :href="item.href" class="text-base text-gray-300 hover:text-white">
+                  <RouterLink :to="item.href" class="text-base text-gray-300 hover:text-white">
                     {{ item.name }}
-                  </a>
+                  </RouterLink>
                 </li>
               </ul>
             </div>
@@ -131,9 +131,9 @@
               <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Legal</h3>
               <ul role="list" class="mt-4 space-y-4">
                 <li v-for="item in footerNavigation.legal" :key="item.name">
-                  <a :href="item.href" class="text-base text-gray-300 hover:text-white">
+                  <RouterLink :to="item.href" class="text-base text-gray-300 hover:text-white">
                     {{ item.name }}
-                  </a>
+                  </RouterLink>
                 </li>
               </ul>
             </div>
@@ -153,10 +153,10 @@
       </div>
       <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
         <div class="flex space-x-6 md:order-2">
-          <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href" class="text-gray-400 hover:text-gray-300">
+          <!-- <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href" class="text-gray-400 hover:text-gray-300">
             <span class="sr-only">{{ item.name }}</span>
             <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
-          </a>
+          </a> -->
         </div>
         <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">2022 &copy; Simping Labs.</p>
       </div>
