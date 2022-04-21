@@ -3,7 +3,7 @@
     <!-- We've used 3xl here, but feel free to try other max-widths based on your needs -->
     <div class="max-w-3xl mx-auto">
         <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">Status</h1>
-        <p>asd</p>
+        <!-- <p>asd</p> -->
     </div>
   </div>
 </template>

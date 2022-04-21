@@ -158,7 +158,7 @@
             <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
           </a> -->
         </div>
-        <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">2022 &copy; Simping Labs.</p>
+        <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">2022 &copy; Simping. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
