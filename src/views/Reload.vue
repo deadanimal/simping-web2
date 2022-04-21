@@ -16,6 +16,8 @@
     </div>
 
   <div class="mt-3">    
+        <h3 class="text-lg leading-6 font-medium text-gray-900">{{store.walletAddress}}</h3>
+
     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
       <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
         <dt class="text-sm font-medium text-gray-500 truncate">
@@ -45,10 +47,31 @@
   </div>    
 
 
-    <div class="max-w-3xl mx-auto">        
+    <div class="max-w-3xl mx-auto">   
+
+      <div class="mt-4 content-center">
+        <iframe
+          src="https://widget.onramper.com?color=266677&apiKey=pk_prod_EXk4EaovzU0pZe3Nqd3nmpjTNjUrXxHEXVyJMewmS7g0&defaultCrypto=USDT&wallets=BNB:0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45&isAddressEditable=false"
+          height="595px"
+          width="440px"
+          title="Buy BFT"
+          frameborder="0"
+          allow="accelerometer;
+          autoplay; camera; gyroscope; payment">
+            <a href="https://widget.onramper.com" target="_blank">Buy crypto</a>
+        </iframe>  
+      </div>
+         
         <!-- <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">Dashboard</h1> -->
     </div>
   </div>
+
+
+
+
+
+
+
 </template>
 
 <script>
