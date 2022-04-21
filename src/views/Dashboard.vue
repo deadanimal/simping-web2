@@ -16,7 +16,11 @@
     </div>
 
   <div class="mt-3">    
-    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+
+    <h3 class="text-lg leading-6 font-medium text-gray-900">Address</h3>
+    <h3 class="text-sm leading-6 font-medium text-gray-900" style="word-wrap: break-word;">{{store.walletAddress}}</h3>
+
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">      
       <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
         <dt class="text-sm font-medium text-gray-500 truncate">
           BFT Balance

@@ -16,7 +16,9 @@
     </div>
 
   <div class="mt-3">    
-        <h3 class="text-lg leading-6 font-medium text-gray-900">{{store.walletAddress}}</h3>
+
+    <h3 class="text-lg leading-6 font-medium text-gray-900">Address</h3>
+    <h3 class="text-sm leading-6 font-medium text-gray-900" style="word-wrap: break-word;">{{store.walletAddress}}</h3>
 
     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
       <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
@@ -46,12 +48,13 @@
     </dl>
   </div>    
 
+  <div class="mt-3">    
 
-    <div class="max-w-3xl mx-auto">   
 
-      <div class="mt-4 content-center">
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden flex justify-center items-center sm:p-6">
         <iframe
-          src="https://widget.onramper.com?color=266677&apiKey=pk_prod_EXk4EaovzU0pZe3Nqd3nmpjTNjUrXxHEXVyJMewmS7g0&defaultCrypto=USDT&wallets=BNB:0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45&isAddressEditable=false"
+          src="https://widget.onramper.com?color=266677&apiKey=pk_prod_EXk4EaovzU0pZe3Nqd3nmpjTNjUrXxHEXVyJMewmS7g0&onlyCryptos=MATIC&wallets=MATIC:0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45&isAddressEditable=false"
           height="595px"
           width="440px"
           title="Buy BFT"
@@ -59,7 +62,19 @@
           allow="accelerometer;
           autoplay; camera; gyroscope; payment">
             <a href="https://widget.onramper.com" target="_blank">Buy crypto</a>
-        </iframe>  
+        </iframe> 
+      </div>
+         
+    </dl>
+  </div>      
+
+
+
+
+    <div class="max-w-3xl mx-auto">   
+
+      <div class="mt-4 content-center">
+
       </div>
          
         <!-- <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">Dashboard</h1> -->
@@ -71,18 +86,31 @@
 
 
 
-
 </template>
 
 <script>
 import { useUserStore } from '@/stores/user'
+import { ref } from 'vue'
+import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { CheckIcon } from '@heroicons/vue/outline'
 
 export default {
+  components: {
+    Dialog,
+    DialogOverlay,
+    DialogTitle,
+    TransitionChild,
+    TransitionRoot,
+    CheckIcon,
+  },
+    
   setup() {
     const store = useUserStore()
+    const open = ref(true)
 
     return {
       store,
+      open,
     }
   },
 
