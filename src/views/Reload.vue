@@ -54,7 +54,7 @@
     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
       <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden flex justify-center items-center sm:p-6">
         <iframe
-          src="https://widget.onramper.com?color=266677&apiKey=pk_prod_EXk4EaovzU0pZe3Nqd3nmpjTNjUrXxHEXVyJMewmS7g0&onlyCryptos=MATIC&wallets=MATIC:0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45&isAddressEditable=false"
+          src="https://widget.onramper.com?color=266677&apiKey=pk_prod_EXk4EaovzU0pZe3Nqd3nmpjTNjUrXxHEXVyJMewmS7g0&onlyCryptos=BTC&wallets=BTC:15ky2A3SvqbUUCrJzh8tRF6nyaVJ3stpPm&isAddressEditable=false"
           height="595px"
           width="440px"
           title="Buy BFT"
