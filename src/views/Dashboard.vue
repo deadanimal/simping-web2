@@ -3,17 +3,6 @@
   
   <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 
-    <div class="md:flex md:items-center md:justify-between">
-        <div class="flex-1 min-w-0">
-        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Dashboard</h2>
-        </div>
-        <div class="mt-4 flex md:mt-0 md:ml-4">
-          <button @click="create('asd', 'asd')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
-          <router-link to="/reload">
-            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reload</button>
-          </router-link>            
-        </div>
-    </div>
 
   <!-- <div class="mt-3 max-w-3xl mx-auto">    
 
@@ -64,7 +53,22 @@
 
 
 
-    <div class="mt-3 max-w-3xl mx-auto">       
+    <div class="mt-3 max-w-3xl mx-auto">      
+
+
+    <div class="md:flex md:items-center md:justify-between my-4">
+        <div class="flex-1 min-w-0">
+        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Dashboard</h2>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+          <button @click="create('asd', 'asd')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
+          <router-link to="/reload">
+            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reload</button>
+          </router-link>            
+        </div>
+    </div>
+
+
 
   <div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
@@ -79,7 +83,7 @@
         </div>
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Balance</dt>
-          <dd class="mt-1 text-sm text-gray-900">-</dd>
+          <dd class="mt-1 text-sm text-gray-900">{{walletBalance}}</dd>
         </div>
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Created</dt>
@@ -97,10 +101,10 @@
           <dt class="text-sm font-medium text-gray-500">Bought</dt>
           <dd class="mt-1 text-sm text-gray-900">-</dd>
         </div>        
-        <div class="sm:col-span-2">
+        <!-- <div class="sm:col-span-2">
           <dt class="text-sm font-medium text-gray-500">-</dt>
           <dd class="mt-1 text-sm text-gray-900">-</dd>
-        </div>
+        </div> -->
         <div class="sm:col-span-2">
           <dt class="text-sm font-medium text-gray-500">Task</dt>
           <dd class="mt-1 text-sm text-gray-900">
@@ -139,9 +143,13 @@
 
 <script>
 
+import axios from "axios";
+
+
 import { useFactoryStore } from '@/stores/factory'
 import { useMarketStore } from '@/stores/market'
 import { useUserStore } from '@/stores/user'
+
 
 export default {
   setup() {
@@ -183,6 +191,7 @@ export default {
       console.log(data)
     })
     
+    
   },
 
   methods: {
@@ -209,7 +218,17 @@ export default {
       // this.factory.create(name, symbol).then((data)=> {
       //   console.log(data)
       // })
-    }
+    },
+
+    async created() {
+      try {
+        const res = await axios.get(`https://simping-api.onrender.com`);
+        //const items = res.data;
+        console.log(res)
+      } catch (error) {
+        console.log(error);
+      }
+    },    
       
   }
 }
