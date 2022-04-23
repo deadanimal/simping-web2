@@ -7,6 +7,8 @@ import Tokenator from '../views/Tokenator.vue'
 import Reload from '../views/Reload.vue'
 import Swap from '../views/Swap.vue'
 
+import FacebookMinter from '../views/FacebookMinter.vue'
+
 import Login from '../views/Login.vue'
 import loginViaWeb3 from '../views/LoginViaWeb3.vue'
 
@@ -31,6 +33,7 @@ const router = createRouter({
       name: 'privacy',
       component: PrivacyView
     },
+    
     {
       path: '/terms',
       name: 'terms',
@@ -45,36 +48,55 @@ const router = createRouter({
       path: '/status',
       name: 'status',
       component: StatusView
-    },            
+    },     
+
     {
       path: '/dashboard',
       name: 'dashboard',
       meta: { requiresAuth: true },
       component: Dashboard
     },     
+
     {
       path: '/reload',
       name: 'reload',
       meta: { requiresAuth: true },
       component: Reload
     },      
+
     {
       path: '/explore',
       name: 'explore',
       component: Explore
     },    
+
     {
       path: '/factory',
       name: 'factory',
       meta: { requiresAuth: true },
       component: Factory
-    },     
+    }, 
+
     {
       path: '/tokenator',
       name: 'tokenator',
       meta: { requiresAuth: true },
       component: Tokenator
-    },   
+    },  
+    
+    {
+      path: '/facebook-minter',
+      name: 'facebook-minter',
+      meta: { requiresAuth: true },
+      component: FacebookMinter
+    }, 
+    
+    {
+      path: '/swap',
+      name: 'swap',
+      meta: { requiresAuth: true },
+      component: Swap
+    },      
 
     {
       path: '/login-via-web3',
