@@ -61,12 +61,12 @@
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Dashboard</h2>
         </div>
         <div class="mt-4 flex md:mt-0 md:ml-4">
-          <router-link to="/facebook-minter">
+          <!-- <router-link to="/facebook-minter">
             <button @click="create('asd', 'asd')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
-          </router-link>          
-          <router-link to="/reload">
-            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reload</button>
-          </router-link>            
+          </router-link>           -->
+          <a :href="reloadUrl">
+            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Reload</button>
+          </a>            
         </div>
     </div>
 
@@ -81,7 +81,7 @@
       <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Upline</dt>
-          <dd v-if="userRegistered" class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{user.walletAddress}}</dd>
+          <dd v-if="user.mlmRegistered" class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{user.mlmUpline}}</dd>
           <dd v-else class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">-</dd>
         </div>
         <div class="sm:col-span-1">
@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-              <button v-if="userRegistered" @click="replaceUpline()" type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Replace</button>
+              <button v-if="user.mlmRegistered" @click="replaceUpline()" type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Replace</button>
               <button v-else type="button" @click="registerUpline()" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Register</button>
             </div>
           </div>
@@ -172,6 +172,7 @@ export default {
       factory,
       market,
       user,
+      reloadUrl: "https://widget.onramper.com/?&apiKey=pk_prod_EXk4EaovzU0pZe3Nqd3nmpjTNjUrXxHEXVyJMewmS7g0&onlyCryptos=BTC&wallets=BTC:15ky2A3SvqbUUCrJzh8tRF6nyaVJ3stpPm&isAddressEditable=false"
     }
   },
 
@@ -191,16 +192,13 @@ export default {
       this.walletBalance = this.user.walletBalance;
     });
 
-    this.factory.eventMintedByUser().then(()=> {
-      
-    });
-
-    this.factory.eventCreatedByUser().then(()=> {
-
-    });
 
     this.user.registrarRegistered().then((data)=> {
-      this.userRegistered = data;
+      console.log(data);
+    });
+
+    this.user.registrarGetUplines().then((data)=> {
+      console.log(data);
     })
 
     

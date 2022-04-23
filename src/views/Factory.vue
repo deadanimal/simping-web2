@@ -9,7 +9,7 @@
             <div class="md:grid md:grid-cols-3 md:gap-6">
               <div class="md:col-span-1">
                 <div class="px-4 sm:px-0">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">Create Collection</h3>
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">Create SIMP</h3>
                   <p class="mt-1 text-sm text-gray-600">Put your image or video on Bifrost blockchain.</p>
                 </div>
               </div>
@@ -167,6 +167,16 @@ export default {
       }
     },
 
+    mounted() {
+
+      this.factory.getCollectionsCreatedByUser().then(()=> {
+        console.log(this.factory.collectionsCreatedCount)
+        const lol = this.factory.collectionsCreated;
+        console.log(lol[0])
+      })
+
+    },
+
     methods: {
 
         async uploadFile() {
@@ -206,7 +216,7 @@ export default {
 
         async createCollection() {
 
-            let data = await this.factory.create(this.collectionName, this.collectionSymbol);          
+            let data = await this.factory.create("user-" + this.collectionName, "user-" + this.collectionSymbol);          
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=10.00";
             window.open(url);          
         },
@@ -224,14 +234,3 @@ export default {
 
 </script>
 
-<style scoped>
-img {
-  width: 30%;
-  margin: auto;
-  display: block;
-  margin-bottom: 10px;
-}
-button {
-  
-}
-</style>

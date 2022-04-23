@@ -32,6 +32,9 @@ export const useUserStore = defineStore({
     walletSig: null,
     walletSigner: null,
 
+    mlmRegistered: false,
+    mlmUpline: null,
+
     bscBft: 0.00,
     bscCoin: 0.00,
 
@@ -71,8 +74,9 @@ export const useUserStore = defineStore({
     },
 
     async registrarGetUplines() {
-      const [upline1, upline2, upline3, upline4, upline5] = registrarContract.getUplines(this.walletAddress);
-      return [upline1, upline2, upline3, upline4, upline5];
+      let uplines = await registrarContract.getUplines(this.walletAddress);
+      this.mlmUpline = uplines[0];
+      return uplines;
     },   
     
     async registrarRegister() {
@@ -92,6 +96,7 @@ export const useUserStore = defineStore({
     
     async registrarRegistered() {
       const registered = registrarContract.registered(this.walletAddress);
+      this.mlmRegistered = registered;
       return registered;
     },  
     
