@@ -14,7 +14,7 @@
     </div>
 
 
-    <div class="max-w-3xl mx-auto">        
+    <div class="max-w-4xl mx-auto">        
         <!-- <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">Dashboard</h1> -->
     </div>
   </div>

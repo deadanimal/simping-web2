@@ -70,7 +70,7 @@
 
 
 
-    <div class="max-w-3xl mx-auto">   
+    <div class="max-w-4xl mx-auto">   
 
       <div class="mt-4 content-center">
 

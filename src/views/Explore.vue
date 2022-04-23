@@ -2,21 +2,40 @@
 
   <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 
-    <div class="md:flex md:items-center md:justify-between">
-        <div class="flex-1 min-w-0">
-        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Explore</h2>
-        </div>
-        <div class="mt-4 flex md:mt-0 md:ml-4">
-          <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
-          <button type="button" @click="makan()" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reload</button>          
-        </div>
-    </div>
 
-    {{aass}}   
 
-    <div class="max-w-3xl mx-auto">     
-      {{aass}}   
-        <!-- <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">Dashboard</h1> -->
+
+    <div class="max-w-4xl mx-auto my-4">            
+
+
+        <div class="md:flex md:items-center md:justify-between">
+            <div class="flex-1 min-w-0">
+              <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Explore</h2>
+            </div>
+            <!-- <div class="mt-4 flex md:mt-0 md:ml-4">
+              <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
+              <button type="button" @click="makan()" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reload</button>          
+            </div> -->
+        </div>
+
+  <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8 mt-6">
+    <li v-for="(mint, index) in allMinteds" :key="mint.nft" class="relative">
+
+      <router-link :to="'/collections/0x2b0BB6d7545B1F0230b2714087DD5e0816701A7B/tokens/' + index">
+          <div class="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">        
+            <img :src="'https://cloudflare-ipfs.com/ipfs/' + mint.imageUrl" alt="" class="object-cover pointer-events-none group-hover:opacity-75" />
+            <button type="button" class="absolute inset-0 focus:outline-none">
+              <span class="sr-only">View details</span>
+            </button>
+          </div>
+          <p class="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{{mint.name}}</p>
+          <p class="block text-sm font-medium text-gray-500 pointer-events-none">{{mint.description}}</p>
+    </router-link>          
+    </li>
+  </ul>        
+
+
+
     </div>
 
   </div>
@@ -26,39 +45,42 @@
 
 <script>
 import { useUserStore } from '@/stores/user'
-import { ethers } from "ethers";
+import { useBasicNftStore } from '@/stores/basicNft'
 
-const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
+
+
+
 
 export default {
   setup() {
-    const store = useUserStore()
+    const basicNft = useBasicNftStore()
+    const user = useUserStore()
 
     return {
-      store,
+      basicNft,
+      user,
     }
   },
 
   data() {
 
       return {
-          aass: 0.00
+          allMinteds: null
       }
       
   },
 
+  mounted() {
+    //this.basicNft.eventMints();
+    this.basicNft.getAllMinteds().then(()=> {
+      this.allMinteds = this.basicNft.allMinteds;
+      console.log(this.allMinteds)
+    })
+  },
+
   methods: {
 
-      async makan() {
-          const isLoggedIn = this.store.isLoggedIn;
-          //const as = await provider.getBlockNumber();
-          let balance = await provider.getBalance("0xF3F07bF98cd2D5B57ED39206F657E4eB1f477B45")
-          balance = ethers.utils.formatEther(balance)
-          this.aass = balance;
-          this.store.latestBalance();
-          console.log('as: ', balance)
-          console.log("makan..", isLoggedIn)
-      }
+
   }
 }
 

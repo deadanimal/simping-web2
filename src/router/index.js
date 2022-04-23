@@ -7,6 +7,9 @@ import Tokenator from '../views/Tokenator.vue'
 import Reload from '../views/Reload.vue'
 import Swap from '../views/Swap.vue'
 
+import Collections from '../views/Collections.vue'
+import Token from '../views/Token.vue'
+
 import FacebookMinter from '../views/FacebookMinter.vue'
 
 import Login from '../views/Login.vue'
@@ -76,6 +79,20 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: Factory
     }, 
+
+    {
+      path: '/collections/:address',
+      name: 'collections',
+      meta: { requiresAuth: true },
+      component: Collections
+    },      
+    
+    {
+      path: '/collections/:address/tokens/:id',
+      name: 'token',
+      meta: { requiresAuth: true },
+      component: Token
+    },           
 
     {
       path: '/tokenator',

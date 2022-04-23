@@ -1,29 +1,12 @@
 import { defineStore } from 'pinia'
 import { ethers } from "ethers";
+import axios from 'axios';
 import { useUserStore } from '@/stores/user'
 
 const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
-const address = "0x812a9A4E2B0BE9603f670FD537a62208B5D33FD9";
-const abi = [
-    "event Created(uint256 indexed,address indexed,address indexed,string,string)",
-    "event Minted(address indexed,address indexed,address indexed,string)",
-    "event OwnershipTransferred(address indexed,address indexed)",
-    "function create(string,string) payable",
-    "function fee() view returns (uint256)",
-    "function getBalance() view returns (uint256)",
-    "function getCollection(uint256) view returns (address, address, string, string)",
-    "function getCollectionCreator(uint256) view returns (address)",
-    "function mint(uint256,address,string) payable",
-    "function owner() view returns (address)",
-    "function renounceOwnership()",
-    "function selfGovern(uint256,address) payable",
-    "function setFee(uint256)",
-    "function transferOwnership(address)",
-    "function withdraw(address,uint256)"
-]
 
-const simpAddress = "0x2b0BB6d7545B1F0230b2714087DD5e0816701A7B";
-const simpAbi = [
+const address = "0x2b0BB6d7545B1F0230b2714087DD5e0816701A7B";
+const abi = [
     "constructor()",
     "event Approval(address indexed,address indexed,uint256 indexed)",
     "event ApprovalForAll(address indexed,address indexed,bool)",
@@ -69,29 +52,48 @@ const simpAbi = [
   
   
 const contract = new ethers.Contract(address, abi, provider);
-const simpContract = new ethers.Contract(simpAddress, simpAbi, provider);
 
 
-export const useFactoryStore = defineStore({
+export const useBasicNftStore = defineStore({
     
-  id: 'factory',
+  id: 'basicNft',
   state: () => ({
-        mintedEvents: null,
-        mintedEventCount: 0,
-        createdEvents: null,
-        createdEventCount: 0
+        mintEvents:  null,
+        allMinteds: []
   }),
   getters: {
 
   },
   actions: {
 
-    async eventCreatedLastDay() {
-        const filterAll = contract.filters.Created(null, null, null, null, null);
-        // all created events from 86400 blocks or 1 day prior
-        const events = await contract.queryFilter(filterAll, -86400);
+    async eventMints() {
+        const filterAll = contract.filters.Transfer("0x0000000000000000000000000000000000000000", null, null);
+        const events = await contract.queryFilter(filterAll);
+        this.mintEvents = events;
+        //console.log(events)
         return events;
-    },    
+    },   
+    
+    async getAllMinteds() {
+        let totalSupply = await contract.totalSupply();
+        totalSupply = ethers.utils.formatUnits(totalSupply, 0)
+
+        let allMinteds = []
+
+        for(var i = 0; i < totalSupply; i++) {
+            let tokenUri = await contract.tokenURI(i);
+            const response = await axios.get('https://cloudflare-ipfs.com/ipfs/' + tokenUri + '/metadata.json')      
+            //tokenUri = 'https://cloudflare-ipfs.com/ipfs/' + tokenUri + '/metadata.json'
+            const maxLength = response.data['image'].length;
+            let imageUrl = response.data['image'].substring(7, maxLength)
+            let data = response.data;
+            data['imageUrl'] = imageUrl;
+            allMinteds.push(data);
+        }
+
+        this.allMinteds = allMinteds;
+        return allMinteds;
+    },
 
     async eventMintedLastDay() {
         const filterAll = contract.filters.Minted(null, null, null, null);
@@ -117,56 +119,13 @@ export const useFactoryStore = defineStore({
         console.log(events.length)
     },
 
-    async create(name, symbol) {
-        const txData = await contract.populateTransaction.create(name, symbol);
-        return txData;
-    },
 
-    async mint(collectionId, to, uri) {
-        const txData = await contract.populateTransaction.mint(collectionId, to, uri);
-        return txData;        
-    },
-
-    async mintBasic( to, uri) {
-        const txData = await simpContract.populateTransaction.safeMint(to, uri);
+    async mint( to, uri) {
+        const txData = await contract.populateTransaction.safeMint(to, uri);
         return txData;        
     },    
 
-    async selfGovern(collectionId, to) {
-        const txData = await contract.populateTransaction.selfGovern(collectionId, to);
-        return txData;        
-    },
-
-    async withdraw(receiver, amount) {
-        const txData = await contract.populateTransaction.withdraw(receiver, amount);
-        return txData;        
-    },   
-    
-    async setFee(amount) {
-        const txData = await contract.populateTransaction.setFee(amount);
-        return txData;        
-    },    
-    
-    async getBalance() {
-        let balance = await contract.getBalance();
-        return balance;        
-    },    
-    
-    async getCollection(collectionId) {
-        let [alamat, creator, name, symbol] = await contract.getCollection(collectionId);
-        let infoObject = {
-            alamat: alamat,
-            creator: creator,
-            name: name,
-            symbol: symbol
-        }
-        return infoObject;        
-    },      
-    
-    async getCollectionCreator(collectionId) {
-        const creator = await contract.getCollectionCreator(collectionId);
-        return creator;        
-    },    
+  
 
 
   }
