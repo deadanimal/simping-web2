@@ -89,27 +89,27 @@
 
   <RouterView />
 
-  <footer class="bg-gray-800" aria-labelledby="footer-heading">
+  <footer aria-labelledby="footer-heading">
     <h2 id="footer-heading" class="sr-only">Footer</h2>
     <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
       <div class="xl:grid xl:grid-cols-2 xl:gap-8">
         <div class="grid grid-cols-1 gap-8 xl:col-span-1">
           <div class="md:grid md:grid-cols-2 md:gap-8">
             <div>
-              <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Solutions</h3>
+              <h3 class="text-sm font-semibold text-black-400 tracking-wider uppercase">Solutions</h3>
               <ul role="list" class="mt-4 space-y-4">
                 <li v-for="item in navigation" :key="item.name">
-                  <RouterLink :to="item.href" class="text-base text-gray-300 hover:text-white">
+                  <RouterLink :to="item.href" class="text-base text-black-300 hover:text-black-500">
                     {{ item.name }}
                   </RouterLink>
                 </li>
               </ul>
             </div>
             <div class="mt-12 md:mt-0">
-              <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Miscellenous</h3>
+              <h3 class="text-sm font-semibold text-black-400 tracking-wider uppercase">Miscellenous</h3>
               <ul role="list" class="mt-4 space-y-4">
                 <li v-for="item in footerNavigation.support" :key="item.name">
-                  <RouterLink :to="item.href" class="text-base text-gray-300 hover:text-white">
+                  <RouterLink :to="item.href" class="text-base text-black-300 hover:text-black-500">
                     {{ item.name }}
                   </RouterLink>
                 </li>
@@ -140,25 +140,25 @@
           </div> -->
         </div>
         <div class="mt-8 xl:mt-0">
-          <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">About Simping</h3>
-          <p class="mt-4 text-base text-gray-300">Simping is all about NFTs and social media, where you can mint, trade, and tokenise NFTs. Other advanced features are included in the roadmap.</p>
+          <h3 class="text-sm font-semibold text-black-400 tracking-wider uppercase">About Simping</h3>
+          <p class="mt-4 text-base text-black-300">Simping is all about NFTs and social media, where you can mint, trade, and tokenise NFTs. Other advanced features are included in the roadmap.</p>
           <!-- <form class="mt-4 sm:flex sm:max-w-md">
             <label for="email-address" class="sr-only">Email address</label>
-            <input type="email" name="email-address" id="email-address" autocomplete="email" required="" class="appearance-none min-w-0 w-full bg-white border border-transparent rounded-md py-2 px-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white focus:border-white focus:placeholder-gray-400" placeholder="Enter your email" />
+            <input type="email" name="email-address" id="email-address" autocomplete="email" required="" class="appearance-none min-w-0 w-full bg-white border border-transparent rounded-md py-2 px-4 text-base text-black-900 placeholder-black-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black-800 focus:ring-white focus:border-white focus:placeholder-black-400" placeholder="Enter your email" />
             <div class="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-              <button type="submit" class="w-full bg-indigo-500 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500">Subscribe</button>
+              <button type="submit" class="w-full bg-indigo-500 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black-800 focus:ring-indigo-500">Subscribe</button>
             </div>
           </form> -->
         </div>
       </div>
-      <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
+      <div class="mt-8 border-t border-black-700 pt-8 md:flex md:items-center md:justify-between">
         <div class="flex space-x-6 md:order-2">
-          <!-- <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href" class="text-gray-400 hover:text-gray-300">
+          <!-- <a v-for="item in footerNavigation.social" :key="item.name" :href="item.href" class="text-black-400 hover:text-black-300">
             <span class="sr-only">{{ item.name }}</span>
             <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
           </a> -->
         </div>
-        <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">2022 &copy; Simping. All Rights Reserved.</p>
+        <p class="mt-8 text-base text-black-400 md:mt-0 md:order-1">2022 &copy; Simping. All Rights Reserved.</p>
       </div>
     </div>
   </footer>
@@ -184,7 +184,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: false },
   { name: 'Explore', href: '/explore', current: false },
   { name: 'Factory', href: '/factory', current: false },
-  { name: 'Tokenator', href: '/tokenator', current: false },
+  //{ name: 'Tokenator', href: '/tokenator', current: false },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -203,7 +203,7 @@ const footerNavigation = {
     { name: 'Privacy', href: 'privacy' },
     { name: 'Terms', href: 'terms' },
     { name: 'Guides', href: 'guides' },
-    { name: 'Status', href: 'status' },
+    //{ name: 'Status', href: 'status' },
   ],
   company: [
     { name: 'About', href: '#' },

@@ -53,56 +53,69 @@
 
 
 
-    <div class="mt-3 max-w-4xl mx-auto">      
+    <div class="mt-3 max-w-4xl mx-auto">   
+
 
 
     <div class="md:flex md:items-center md:justify-between my-4">
         <div class="flex-1 min-w-0">
-        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Token....</h2>
+        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">{{latestPrice}} BFT</h2>
         </div>
         <div class="mt-4 flex md:mt-0 md:ml-4">
-          <router-link to="/facebook-minter">
+          <!-- <router-link to="/facebook-minter">
             <button @click="create('asd', 'asd')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
-          </router-link>          
-          <router-link to="/reload">
-            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Reload</button>
-          </router-link>            
+          </router-link>           -->          
+            <button type="button" v-if="canBuy" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Buy</button>          
+            <button type="button" v-if="canSell" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Sell</button>          
+            <button type="button" v-if="canBid" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Bid</button>          
+            <button type="button" v-if="canAuction" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Auction</button>          
         </div>
     </div>
 
 
 
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="bg-white overflow-hidden shadow ring-2 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
+
+      
     <div class="px-4 py-5 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">Wallet Address</h3>
-      <p class="mt-1 max-w-2xl text-sm text-gray-500" style="word-wrap: break-word;">{{user.walletAddress}}</p>
+      <h3 class="text-lg leading-6 font-medium text-gray-900">{{ name }}</h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500" style="word-wrap: break-word;">{{ description }}</p>
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-      <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Upline</dt>
-          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{user.walletAddress}}</dd>
+
+
+      <!-- Product image -->
+      <div class="mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2 lg:self-center">
+        <div class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden my-3 mx-3">
+          <img :src="imageUrl" :alt="imageUrl" class="w-full h-full object-center object-cover" />
+        </div>
+      </div>
+
+
+    <div class="border-t border-gray-200 px-4 pb-5 sm:px-6">
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 flex items-center">
+        <div class="sm:col-span-2 object-none object-center flex items-center">
+            
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Balance</dt>
-          <dd class="mt-1 text-sm text-gray-900">{{walletBalance}}</dd>
+          <dt class="text-sm font-medium text-gray-500">Contract</dt>
+          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{collection}}</dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Created</dt>
-          <dd class="mt-1 text-sm text-gray-900">-</dd>
+          <dt class="text-sm font-medium text-gray-500">Token ID</dt>
+          <dd class="mt-1 text-sm text-gray-900">{{tokenId}}</dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Minted</dt>
-          <dd class="mt-1 text-sm text-gray-900">-</dd>
+          <dt class="text-sm font-medium text-gray-500">Minter</dt>
+          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{creator}}</dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Sold</dt>
-          <dd class="mt-1 text-sm text-gray-900">-</dd>
+          <dt class="text-sm font-medium text-gray-500">Owner</dt>
+          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{owner}}</dd>
         </div>
-        <div class="sm:col-span-1">
+        <!-- <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Bought</dt>
           <dd class="mt-1 text-sm text-gray-900">-</dd>
-        </div>        
+        </div>         -->
         <!-- <div class="sm:col-span-2">
           <dt class="text-sm font-medium text-gray-500">-</dt>
           <dd class="mt-1 text-sm text-gray-900">-</dd>
@@ -112,61 +125,79 @@
     </div>
   </div>
 
-  <div class="my-6">
-    <div class="md:grid md:grid-cols-3 md:gap-6">
-      <div class="md:col-span-1">
-        <div class="px-4 sm:px-0">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Leader Info</h3>
-          <p class="mt-1 text-sm text-gray-600">Manage and update your leader address so that leader can provide assistance to you.</p>
-        </div>
-      </div>
 
-      <div class="mt-5 md:mt-0 md:col-span-2">
-       <form action="#" method="POST">
-          <div class="shadow overflow-hidden sm:rounded-md">
-            <div class="px-4 py-5 bg-white sm:p-6">
-              <div class="grid grid-cols-6 gap-6">
-
-                <div class="col-span-6 sm:col-span-6">
-                  <label for="email-address" class="block text-sm font-medium text-gray-700">Address</label>
-                  <input type="text" name="email-address" id="email-address" autocomplete="email" class="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                </div>
-
-
-              </div>
-            </div>
-            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-              <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Register</button>
-            </div>
-          </div>
-        </form>
-      </div>
+    <div class="-mx-4 mt-8 overflow-hidden shadow ring-2 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
+      <table class="min-w-full divide-y divide-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Block</th>
+            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Transaction</th>
+            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">Email</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
+            <!-- <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+              <span class="sr-only">Edit</span>
+            </th> -->
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 bg-white">
+          <tr v-for="person in people" :key="person.email">
+            <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
+              {{ person.name }}
+              <dl class="font-normal lg:hidden">
+                <dt class="sr-only">Title</dt>
+                <dd class="mt-1 truncate text-gray-700">{{ person.title }}</dd>
+                <dt class="sr-only sm:hidden">Email</dt>
+                <dd class="mt-1 truncate text-gray-500 sm:hidden">{{ person.email }}</dd>
+              </dl>
+            </td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ person.title }}</td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ person.email }}</td>
+            <td class="px-3 py-4 text-sm text-gray-500">{{ person.role }}</td>
+            <!-- <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+              <a href="#" class="text-indigo-600 hover:text-indigo-900"
+                >Edit<span class="sr-only">, {{ person.name }}</span></a
+              >
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>  
 
-        <!-- <h1 class="text-4xl font-extrabold tracking-tight lg:text-6xl">Dashboard</h1> -->
+
+
+
     </div>
   </div>
 </template>
 
 <script>
 
-import axios from "axios";
+//import axios from "axios";
 
-
+import { useBasicNftStore } from '@/stores/basicNft'
 import { useFactoryStore } from '@/stores/factory'
 import { useMarketStore } from '@/stores/market'
 import { useUserStore } from '@/stores/user'
 
 
+
+const people = [
+  { name: 'Block', title: 'Tx', email: 'Price', role: 'Address' },
+  // More people...
+]
+
 export default {
+
   setup() {
 
+    const basicNft = useBasicNftStore()
     const factory = useFactoryStore()
     const market = useMarketStore()
     const user = useUserStore()
 
     return {
+        people,
+      basicNft,
       factory,
       market,
       user,
@@ -176,70 +207,55 @@ export default {
   data() {
 
       return {
-          walletBalance: 0.00
+          walletBalance: 0.00,
+          imageUrl: 'https://cloudflare-ipfs.com/ipfs/bafybeicquurmvwmotyiaa52zphmmzuxx25rsol2wwzeaxl25qmgbsq2lnm/media.png',
+          collection: null,
+          tokenId: null,
+          latestPrice: 0.00,
+          metadata: null,
+          name: null,
+          description: null,
+          creator: null,
+          owner: null,
+          canBuy: true,
+          canSell: true,
+          canAuction: true,
+          canBid: true
       }
       
   },
 
   mounted() {
 
-    this.user.latestBalance().then(()=> {
-      this.walletBalance = this.user.walletBalance;
-    });
+      this.collection = this.$route.params['address'];
+      this.tokenId = this.$route.params['id'];
 
-    this.factory.eventMintedByUser().then(()=> {
-      
-    });
+      if (this.collection == '0x2b0BB6d7545B1F0230b2714087DD5e0816701A7B') {
+          this.basicNft.getTokenMetadata(this.tokenId).then((data)=> {
+              //data = JSON.parse(data);
+            this.metadata = data;
+            this.name = data.name;
+            this.description = data.description;
+            this.imageUrl = 'https://cloudflare-ipfs.com/ipfs/' + data.imageUrl
+          });
 
-    this.factory.eventCreatedByUser().then(()=> {
+      }
 
-    });
+      this.basicNft.getCreator(this.tokenId).then((data)=> {
+          this.creator = data;
+      })
 
-    this.user.registrarRegistered().then((data)=> {
-      console.log(data)
-    })
+      this.basicNft.getOwner(this.tokenId).then((data)=> {
+          this.owner = data;
+      })      
 
-    this.created();
+
     
     
   },
 
   methods: {
 
-      // async makan() {
-      //     this.store.latestBalance();
-      // }
-
-    acceptBid() {
-      this.market.acceptBid(1).then((data)=> {
-        console.log(data)
-      })
-    },
-
-    create(name, symbol) {
-      const aa = {
-        n: name, 
-        s: symbol
-      }
-      const aaaa = encodeURIComponent(JSON.stringify(aa))
-      console.log(aaaa);
-
-
-      // this.factory.create(name, symbol).then((data)=> {
-      //   console.log(data)
-      // })
-    },
-
-    async created() {
-      try {
-        const res = await axios.get(`https://simping-api.onrender.com`);
-        //const items = res.data;
-        console.log(res)
-      } catch (error) {
-        console.log(error);
-      }
-    },    
-      
   }
 }
 

@@ -72,7 +72,7 @@
 
 
 
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="bg-white shadow ring-2 ring-black ring-opacity-5 sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
       <h3 class="text-lg leading-6 font-medium text-gray-900">Wallet Address</h3>
       <p class="mt-1 max-w-2xl text-sm text-gray-500" style="word-wrap: break-word;">{{user.walletAddress}}</p>
@@ -81,7 +81,8 @@
       <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Upline</dt>
-          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{user.walletAddress}}</dd>
+          <dd v-if="userRegistered" class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{user.walletAddress}}</dd>
+          <dd v-else class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">-</dd>
         </div>
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Balance</dt>
@@ -122,24 +123,25 @@
       </div>
 
       <div class="mt-5 md:mt-0 md:col-span-2">
-       <form action="#" method="POST">
-          <div class="shadow overflow-hidden sm:rounded-md">
+       
+          <div class="shadow ring-2 ring-black ring-opacity-5 overflow-hidden sm:rounded-md">
             <div class="px-4 py-5 bg-white sm:p-6">
               <div class="grid grid-cols-6 gap-6">
 
                 <div class="col-span-6 sm:col-span-6">
                   <label for="email-address" class="block text-sm font-medium text-gray-700">Address</label>
-                  <input type="text" name="email-address" id="email-address" autocomplete="email" class="mt-1 focus:ring-gray-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                  <input type="text" v-model="uplineAddress" class="mt-1 focus:ring-green-500 focus:border-green-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                 </div>
 
 
               </div>
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-              <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Register</button>
+              <button v-if="userRegistered" @click="replaceUpline()" type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Replace</button>
+              <button v-else type="button" @click="registerUpline()" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Register</button>
             </div>
           </div>
-        </form>
+        
       </div>
     </div>
   </div>  
@@ -151,7 +153,7 @@
 
 <script>
 
-import axios from "axios";
+//import axios from "axios";
 
 
 import { useFactoryStore } from '@/stores/factory'
@@ -176,6 +178,8 @@ export default {
   data() {
 
       return {
+          uplineAddress: null,
+          userRegistered: false,
           walletBalance: 0.00
       }
       
@@ -196,49 +200,32 @@ export default {
     });
 
     this.user.registrarRegistered().then((data)=> {
-      console.log(data)
+      this.userRegistered = data;
     })
 
-    this.created();
     
     
   },
 
   methods: {
 
-      // async makan() {
-      //     this.store.latestBalance();
-      // }
+    async registerUpline() {
 
-    acceptBid() {
-      this.market.acceptBid(1).then((data)=> {
-        console.log(data)
-      })
+      let data = await this.user.registrarRegister(this.uplineAddress);
+      var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
+      window.open(url);
+
     },
 
-    create(name, symbol) {
-      const aa = {
-        n: name, 
-        s: symbol
-      }
-      const aaaa = encodeURIComponent(JSON.stringify(aa))
-      console.log(aaaa);
+    async replaceUpline() {
 
+      let data = await this.user.registrarReplace(this.uplineAddress);
+      var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
+      window.open(url);
 
-      // this.factory.create(name, symbol).then((data)=> {
-      //   console.log(data)
-      // })
-    },
+    }    
 
-    async created() {
-      try {
-        const res = await axios.get(`https://simping-api.onrender.com`);
-        //const items = res.data;
-        console.log(res)
-      } catch (error) {
-        console.log(error);
-      }
-    },    
+ 
       
   }
 }

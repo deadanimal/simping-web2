@@ -114,7 +114,6 @@ export const useFactoryStore = defineStore({
         const events = await contract.queryFilter(filterAll);
         this.createdEvents = events;
         this.createdEventCount = events.length;
-        console.log(events.length)
     },
 
     async create(name, symbol) {

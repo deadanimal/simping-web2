@@ -80,13 +80,13 @@ export const useBasicNftStore = defineStore({
 
         let allMinteds = []
 
-        for(var i = 0; i < totalSupply; i++) {
+        for(var i = totalSupply - 1; i > -1; i--) {
             let tokenUri = await contract.tokenURI(i);
             const response = await axios.get('https://cloudflare-ipfs.com/ipfs/' + tokenUri + '/metadata.json')      
-            //tokenUri = 'https://cloudflare-ipfs.com/ipfs/' + tokenUri + '/metadata.json'
             const maxLength = response.data['image'].length;
             let imageUrl = response.data['image'].substring(7, maxLength)
             let data = response.data;
+            data['id'] = i;
             data['imageUrl'] = imageUrl;
             allMinteds.push(data);
         }
@@ -95,29 +95,56 @@ export const useBasicNftStore = defineStore({
         return allMinteds;
     },
 
-    async eventMintedLastDay() {
-        const filterAll = contract.filters.Minted(null, null, null, null);
-        // all minted events from 86400 blocks or 1 day prior
-        const events = await contract.queryFilter(filterAll, -86400);
-        return events;
-    },   
-    
-    async eventMintedByUser() {
-        const user = useUserStore();
-        const filterAll = contract.filters.Minted(null, user.walletAddress, null, null);
-        const events = await contract.queryFilter(filterAll);
-        this.mintedEvents = events;
-        this.mintedEventCount = events.length;
-    },      
+    async getTokenMetadata(tokenId) {
 
-    async eventCreatedByUser() {
-        const user = useUserStore();
-        const filterAll = contract.filters.Created(null, null, user.walletAddress, null, null);
-        const events = await contract.queryFilter(filterAll);
-        this.createdEvents = events;
-        this.createdEventCount = events.length;
-        console.log(events.length)
+        let tokenUri = await contract.tokenURI(tokenId);
+        const response = await axios.get('https://cloudflare-ipfs.com/ipfs/' + tokenUri + '/metadata.json')     
+        const maxLength = response.data['image'].length;
+        let imageUrl = response.data['image'].substring(7, maxLength)
+        let data = response.data;
+        data['id'] = tokenId;
+        data['imageUrl'] = imageUrl;   
+        
+        return data;
+
     },
+
+    async getCreator(tokenId) {
+        const filterAll = await contract.filters.Transfer("0x0000000000000000000000000000000000000000", null, ethers.utils.parseUnits(tokenId, 0));
+        const events = await contract.queryFilter(filterAll);    
+        const creator = events[0]['args'][1];
+        return creator;
+    },
+
+    async getOwner(tokenId) {
+        const owner = await contract.ownerOf(tokenId);        
+        return owner;
+
+    },    
+
+    // async eventMintedLastDay() {
+    //     const filterAll = contract.filters.Minted(null, null, null, null);
+    //     // all minted events from 86400 blocks or 1 day prior
+    //     const events = await contract.queryFilter(filterAll, -86400);
+    //     return events;
+    // },   
+    
+    // async eventMintedByUser() {
+    //     const user = useUserStore();
+    //     const filterAll = contract.filters.Minted(null, user.walletAddress, null, null);
+    //     const events = await contract.queryFilter(filterAll);
+    //     this.mintedEvents = events;
+    //     this.mintedEventCount = events.length;
+    // },      
+
+    // async eventCreatedByUser() {
+    //     const user = useUserStore();
+    //     const filterAll = contract.filters.Created(null, null, user.walletAddress, null, null);
+    //     const events = await contract.queryFilter(filterAll);
+    //     this.createdEvents = events;
+    //     this.createdEventCount = events.length;
+    //     console.log(events.length)
+    // },
 
 
     async mint( to, uri) {

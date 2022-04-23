@@ -1,7 +1,50 @@
 <template>
 
   <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto">     
+    <div class="max-w-4xl mx-auto">   
+      
+        
+
+          <div class="mt-4">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+              <div class="md:col-span-1">
+                <div class="px-4 sm:px-0">
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">Create Collection</h3>
+                  <p class="mt-1 text-sm text-gray-600">Put your image or video on Bifrost blockchain.</p>
+                </div>
+              </div>
+              <div class="mt-5 md:mt-0 md:col-span-2">
+
+
+                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
+                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                      <div class="grid grid-cols-3 gap-6">
+                        <div class="col-span-3 sm:col-span-3">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Name </label>
+                          <div class="mt-1 flex rounded-md shadow-sm">
+                            <input type="text" v-model="collectionName" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                          </div>
+                        </div>
+                        
+                        <div class="col-span-3 sm:col-span-3">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Symbol </label>
+                          <div class="mt-1 flex rounded-md shadow-sm">
+                            <input type="text" v-model="collectionSymbol" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                          </div>
+                        </div>                        
+                      </div>
+
+
+
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="createCollection()">Create Collection</button>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
 
 
           <div class="mt-4">
@@ -15,7 +58,7 @@
               <div class="mt-5 md:mt-0 md:col-span-2">
 
 
-                  <div class="shadow sm:rounded-md sm:overflow-hidden">
+                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                       <div class="grid grid-cols-3 gap-6">
                         <div class="col-span-3 sm:col-span-2">
@@ -88,6 +131,7 @@
 <script>
 
 import { useBasicNftStore } from '@/stores/basicNft'
+import { useFactoryStore } from '@/stores/factory'
 import { useUserStore } from '@/stores/user'
 import { NFTStorage } from 'nft.storage'
 
@@ -101,11 +145,13 @@ export default {
     setup() {
 
         const basicNft = useBasicNftStore()
+        const factory = useFactoryStore()
         const user = useUserStore()
 
 
         return {          
           basicNft,
+          factory,
           user
        }
     },
@@ -115,7 +161,9 @@ export default {
         image: '',
         name: null,
         description: null,
-        metadataJsonUrl: null
+        metadataJsonUrl: null,
+        collectionName: null,
+        collectionSymbol: null
       }
     },
 
@@ -155,6 +203,13 @@ export default {
           console.log(e)
           this.image = '';
         },     
+
+        async createCollection() {
+
+            let data = await this.factory.create(this.collectionName, this.collectionSymbol);          
+            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=10.00";
+            window.open(url);          
+        },
         
         async mintNFT() {
 
