@@ -49,19 +49,32 @@ export const useMarketStore = defineStore({
   state: () => ({
     allForSales: [],
     allForSaleCount: 0,
-    // counter: 0
+    balance: null,
+    owner: null
+
   }),
   getters: {
-    // doubleCount: (state) => state.counter * 2
+
   },
   actions: {
-    increment() {
-      this.counter++
+
+    async getOwner() {
+      let owner = await contract.owner();
+      this.owner = owner;
+      
     },
 
-    getAuctionCompleted() {
-
+    async getBalance() {
+      let balance = await contract.getBalance();
+      this.balance = ethers.utils.formatUnits(balance, 18)
     },
+
+    async withdraw(receiver, amount) {
+      const amountTx = ethers.utils.parseUnits(amount.toString(), 18)
+      let balance = await contract.populateTransaction.withdraw(receiver, amountTx)
+      return balance;
+    },    
+
 
     async acceptBid(saleId) {
         const txData = await contract.populateTransaction.acceptBid(saleId);

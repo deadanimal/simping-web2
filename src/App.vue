@@ -158,7 +158,7 @@
             <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
           </a> -->
         </div>
-        <p class="mt-8 text-base text-black-400 md:mt-0 md:order-1">2022 &copy; Simping. All Rights Reserved.</p>
+        <p class="mt-8 text-base text-black-400 md:mt-0 md:order-1">2022 &copy; Simping. All Rights Reserved. | <router-link to="/admin">Admin</router-link></p>
       </div>
     </div>
   </footer>

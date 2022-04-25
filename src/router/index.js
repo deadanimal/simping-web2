@@ -7,6 +7,7 @@ import InstagramLogin from '../views/InstagramLogin.vue'
 import FactoryInstagram from '../views/FactoryInstagram.vue'
 import Tokenator from '../views/Tokenator.vue'
 import Reload from '../views/Reload.vue'
+import Admin from '../views/Admin.vue'
 import Swap from '../views/Swap.vue'
 import Profile from '../views/Profile.vue'
 
@@ -63,6 +64,13 @@ const router = createRouter({
       name: 'profile',
       component: Profile
     },      
+
+    {
+      path: '/admin',
+      name: 'admin',
+      meta: { requiresAuth: true },
+      component: Admin
+    },        
 
     {
       path: '/dashboard',
