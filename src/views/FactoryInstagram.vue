@@ -432,8 +432,8 @@ export default {
             console.log(event.target.value)
         },
         
-        getInstagramPosts() {
-            const data = fetch('https://graph.instagram.com/v13.0/me/media?access_token=' + this.user.instagramAccessToken);
+        async getInstagramPosts() {
+            const data = await fetch('https://graph.instagram.com/v13.0/me/media?access_token=' + this.user.instagramAccessToken);
             console.log(data)
 
         }
