@@ -35,6 +35,10 @@ export const useUserStore = defineStore({
     mlmRegistered: false,
     mlmUpline: null,
 
+    instagramAccessToken: null,
+    instagramUserId: null,
+    instagramLoggedIn: false,    
+
     bscBft: 0.00,
     bscCoin: 0.00,
 
@@ -66,6 +70,12 @@ export const useUserStore = defineStore({
       this.isLoggedIn = true;
       
       console.log('Store Updated. Address: ', this.walletAddress);
+    },
+
+    updateInstagramLogin(access_token, user_id) {
+      this.instagramAccessToken = access_token;
+      this.instagramUserId = user_id;
+      this.instagramLoggedIn = true;
     },
 
     async registrarGetDownlineCount() {

@@ -4,10 +4,10 @@
 
 
 
-    <div class="max-w-4xl mx-auto my-4">            
+    <div class="max-w-4xl mx-auto">            
 
 
-        <div class="md:flex md:items-center md:justify-between">
+        <div class="md:flex md:items-center md:justify-between py-4">
             <div class="flex-1 min-w-0">
               <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Latest SIMPs</h2>
             </div>
@@ -42,6 +42,7 @@
 
 <script>
 import { useFactoryStore } from '@/stores/factory'
+import { useMarketStore } from '@/stores/market'
 import { useUserStore } from '@/stores/user'
 import { useBasicNftStore } from '@/stores/basicNft'
 import { ethers } from "ethers";
@@ -54,11 +55,13 @@ export default {
 
     const basicNft = useBasicNftStore()
     const factory = useFactoryStore()
+    const market = useMarketStore()
     const user = useUserStore()
 
     return {
       basicNft,
       factory,
+      market,
       user,
     }
   },
@@ -95,6 +98,10 @@ export default {
           }
           
 
+    })
+
+    this.market.getAllForSales().then(()=> {
+        console.log(this.market.allForSales)
     })
 
 

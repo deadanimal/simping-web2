@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Explore from '../views/Explore.vue'
 import Factory from '../views/Factory.vue'
+import FactoryInstagram from '../views/FactoryInstagram.vue'
 import Tokenator from '../views/Tokenator.vue'
 import Reload from '../views/Reload.vue'
 import Swap from '../views/Swap.vue'
@@ -88,6 +89,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: Factory
     }, 
+
+    {
+      path: '/factory/instagram',
+      name: 'factory-instagram',
+      meta: { requiresAuth: true },
+      component: FactoryInstagram
+    },     
 
     {
       path: '/collections/:id',

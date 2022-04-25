@@ -47,6 +47,8 @@ const contract = new ethers.Contract(address, abi, provider);
 export const useMarketStore = defineStore({
   id: 'market',
   state: () => ({
+    allForSales: [],
+    allForSaleCount: 0,
     // counter: 0
   }),
   getters: {
@@ -64,6 +66,27 @@ export const useMarketStore = defineStore({
     async acceptBid(saleId) {
         const txData = await contract.populateTransaction.acceptBid(saleId);
         return txData;
+    },
+
+    async getAllForSales() {
+      const filterAll = contract.filters.TokenForSale(null, null, null, null);
+      const events = await contract.queryFilter(filterAll);
+      let sales = [];
+      for (var i = 0; i < events.length; i++) {
+          let data = {
+              blockHash: events[i]['blockHash'],
+              blockNumber: events[i]['blockNumber'],
+              collectionAddress: events[i]['args'][0],
+              tokenId: events[i]['args'][1],
+              saleId: events[i]['args'][2],
+              timestamp: events[i]['args'][3],
+              
+          }
+          sales.push(data);
+
+      }
+      this.allForSales = sales;
+      this.allForSaleCount = sales.length;      
     }
 
   }

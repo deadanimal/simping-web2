@@ -57,7 +57,7 @@
 
 
 
-    <div class="md:flex md:items-center md:justify-between my-4" v-if="heldByContract">
+    <div class="md:flex md:items-center md:justify-between py-4" v-if="heldByContract">
         <div class="flex-1 min-w-0">
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">{{latestPrice}} BFT</h2>
         </div>
@@ -192,7 +192,7 @@
 
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" @click="approveCollection()">Approve Collection</button>
+                      <button type="button" v-if="collectionApproved == false" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" @click="approveCollection()">Approve Collection</button>
                       <button type="button" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="sellToken()">Sell Token</button>
                     </div>
                   </div>
@@ -350,6 +350,7 @@ export default {
           sellEvents: [],
           latestSaleId: null,
           soldEvents: [],
+          collectionApproved: false,
       }
       
   },
@@ -416,12 +417,16 @@ export default {
   
               })
 
+              collection.isApprovedForAll(this.user.walletAddress, "0x4193937c113A97978B469DA3F3906B7bc080d7Db").then((data)=> {
+                  this.collectionApproved = data;
+              })
+
           })
 
           const market = new ethers.Contract(address, marketAbi, provider);   
-          market.isCollectionInitialised(this.collectionId).then((data)=> {
-              console.log(data)
-          })       
+        //   market.isCollectionInitialised(this.collectionId).then((data)=> {
+        //       console.log(data)
+        //   })       
 
         const sellFilter = market.filters.TokenForSale(this.collectionAddress, parseInt(this.tokenId), null);
         let sellEvents = await market.queryFilter(sellFilter);      
@@ -464,7 +469,7 @@ export default {
         }       
         this.soldEvents.sort((a,b) => b.timestamp - a.timestamp); // b - a for reverse sort
 
-        console.log(this.soldEvents)   
+
     
 
 
