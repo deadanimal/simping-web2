@@ -36,7 +36,7 @@ export default {
 
         store.updateInstagramLogin(access_token, user_id);
         
-        router.push('/dashboard');
+        router.push('/factory/instagram');
     },
 }
 </script>

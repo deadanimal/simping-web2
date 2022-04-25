@@ -486,7 +486,9 @@ export default {
       async sellToken() {
                          
             const market = new ethers.Contract(address, marketAbi, provider);   
-            let data = await market.populateTransaction.sell(this.collectionId, this.collectionAddress, this.tokenId, ethers.utils.parseUnits(this.sellingPrice.toString(), 18));
+            let price = parseInt(this.sellingPrice)
+            price = price.toString()
+            let data = await market.populateTransaction.sell(this.collectionId, this.collectionAddress, this.tokenId, ethers.utils.parseUnits(price, 18));
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
             window.open(url);              
       },
