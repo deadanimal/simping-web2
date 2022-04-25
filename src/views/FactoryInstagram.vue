@@ -264,6 +264,7 @@ import { useFactoryStore } from '@/stores/factory'
 import { useUserStore } from '@/stores/user'
 import { NFTStorage } from 'nft.storage'
 import { ethers } from "ethers";
+import axios from 'axios';
 
 const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGE4MzViRTI0Y2QxNEUwZTREMjVENTY0NGRBMDM0RjczQTExNzkyZTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0ODM5MjY0ODIyNywibmFtZSI6InNpbXBpbmcifQ.s9oheLM37vF4kHTs-lOzTCYCUODTERg2amyV8rCPtOk';
 const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
@@ -433,8 +434,8 @@ export default {
         },
         
         async getInstagramPosts() {
-            const data = await fetch('https://graph.instagram.com/v13.0/me/media?access_token=' + this.user.instagramAccessToken);
-            console.log(data)
+            const response = await axios.get('https://graph.instagram.com/v13.0/me/media?access_token=' + this.user.instagramAccessToken);
+            console.log(response)
 
         }
         
