@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 
 
 const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
-const address = "0x584E279549B35425E4CAd1d5DD9007049Aff7542";
+const address = "0x9D3153048f174f6F119BEb490572b65800a1e243";
 const abi = [
   "event AuctionCompleted(uint256 indexed,address indexed,address indexed,uint256)",
   "event AuctionCreated(uint256 indexed,address indexed,uint256)",

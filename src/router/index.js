@@ -6,6 +6,7 @@ import Factory from '../views/Factory.vue'
 import Tokenator from '../views/Tokenator.vue'
 import Reload from '../views/Reload.vue'
 import Swap from '../views/Swap.vue'
+import Profile from '../views/Profile.vue'
 
 import Collections from '../views/Collections.vue'
 import Token from '../views/Token.vue'
@@ -42,16 +43,24 @@ const router = createRouter({
       name: 'terms',
       component: TermsView
     },   
+
     {
       path: '/guides',
       name: 'guides',
       component: GuidesView
     },   
+
     {
       path: '/status',
       name: 'status',
       component: StatusView
     },     
+
+    {
+      path: '/profile/:address',
+      name: 'profile',
+      component: Profile
+    },      
 
     {
       path: '/dashboard',
@@ -81,14 +90,14 @@ const router = createRouter({
     }, 
 
     {
-      path: '/collections/:address',
+      path: '/collections/:id',
       name: 'collections',
       meta: { requiresAuth: true },
       component: Collections
     },      
     
     {
-      path: '/collections/:address/tokens/:id',
+      path: '/collections/:collectionId/tokens/:tokenId',
       name: 'token',
       meta: { requiresAuth: true },
       component: Token

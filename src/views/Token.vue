@@ -98,7 +98,7 @@
         </div>
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Contract</dt>
-          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{collection}}</dd>
+          <dd class="mt-1 text-sm text-gray-900" style="word-wrap: break-word;">{{collectionAddress}}</dd>
         </div>
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">Token ID</dt>
@@ -178,10 +178,57 @@ import { useBasicNftStore } from '@/stores/basicNft'
 import { useFactoryStore } from '@/stores/factory'
 import { useMarketStore } from '@/stores/market'
 import { useUserStore } from '@/stores/user'
+import { ethers } from "ethers";
+import axios from 'axios';
+
+const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
+const abi = [
+    "constructor()",
+    "event Approval(address indexed,address indexed,uint256 indexed)",
+    "event ApprovalForAll(address indexed,address indexed,bool)",
+    "event DelegateChanged(address indexed,address indexed,address indexed)",
+    "event DelegateVotesChanged(address indexed,uint256,uint256)",
+    "event OwnershipTransferred(address indexed,address indexed)",
+    "event Paused(address)",
+    "event Transfer(address indexed,address indexed,uint256 indexed)",
+    "event Unpaused(address)",
+    "function DOMAIN_SEPARATOR() view returns (bytes32)",
+    "function approve(address,uint256)",
+    "function balanceOf(address) view returns (uint256)",
+    "function delegate(address)",
+    "function delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)",
+    "function delegates(address) view returns (address)",
+    "function getApproved(uint256) view returns (address)",
+    "function getPastTotalSupply(uint256) view returns (uint256)",
+    "function getPastVotes(address,uint256) view returns (uint256)",
+    "function getVotes(address) view returns (uint256)",
+    "function isApprovedForAll(address,address) view returns (bool)",
+    "function name() view returns (string)",
+    "function nonces(address) view returns (uint256)",
+    "function owner() view returns (address)",
+    "function ownerOf(uint256) view returns (address)",
+    "function pause()",
+    "function paused() view returns (bool)",
+    "function renounceOwnership()",
+    "function safeMint(address,string)",
+    "function safeTransferFrom(address,address,uint256)",
+    "function safeTransferFrom(address,address,uint256,bytes)",
+    "function setApprovalForAll(address,bool)",
+    "function supportsInterface(bytes4) view returns (bool)",
+    "function symbol() view returns (string)",
+    "function tokenByIndex(uint256) view returns (uint256)",
+    "function tokenOfOwnerByIndex(address,uint256) view returns (uint256)",
+    "function tokenURI(uint256) view returns (string)",
+    "function totalSupply() view returns (uint256)",
+    "function transferFrom(address,address,uint256)",
+    "function transferOwnership(address)",
+    "function unpause()"
+  ]
+  
 
 
 
-const people = [
+let people = [
   { name: 'Block', title: 'Tx', email: 'Price', role: 'Address' },
   // More people...
 ]
@@ -196,7 +243,7 @@ export default {
     const user = useUserStore()
 
     return {
-        people,
+      people,
       basicNft,
       factory,
       market,
@@ -209,14 +256,15 @@ export default {
       return {
           walletBalance: 0.00,
           imageUrl: 'https://cloudflare-ipfs.com/ipfs/bafybeicquurmvwmotyiaa52zphmmzuxx25rsol2wwzeaxl25qmgbsq2lnm/media.png',
-          collection: null,
+          collectionId: null,
+          collectionAddress: null,
           tokenId: null,
           latestPrice: 0.00,
           metadata: null,
           name: null,
           description: null,
           creator: null,
-          owner: null,
+          owner: "-",
           canBuy: true,
           canSell: true,
           canAuction: true,
@@ -227,27 +275,31 @@ export default {
 
   mounted() {
 
-      this.collection = this.$route.params['address'];
-      this.tokenId = this.$route.params['id'];
+      this.collectionId = this.$route.params['collectionId'];
+      this.tokenId = this.$route.params['tokenId'];
 
-      if (this.collection == '0x2b0BB6d7545B1F0230b2714087DD5e0816701A7B') {
-          this.basicNft.getTokenMetadata(this.tokenId).then((data)=> {
-              //data = JSON.parse(data);
-            this.metadata = data;
-            this.name = data.name;
-            this.description = data.description;
-            this.imageUrl = 'https://cloudflare-ipfs.com/ipfs/' + data.imageUrl
-          });
+    //   if (this.collection == '0x2b0BB6d7545B1F0230b2714087DD5e0816701A7B') {
+    //       this.basicNft.getTokenMetadata(this.tokenId).then((data)=> {
+    //           //data = JSON.parse(data);
+    //         this.metadata = data;
+    //         this.name = data.name;
+    //         this.description = data.description;
+    //         this.imageUrl = 'https://cloudflare-ipfs.com/ipfs/' + data.imageUrl
+    //       });
 
-      }
+    //   }
 
-      this.basicNft.getCreator(this.tokenId).then((data)=> {
-          this.creator = data;
-      })
+    //   this.basicNft.getCreator(this.tokenId).then((data)=> {
+    //       this.creator = data;
+    //   })
 
-      this.basicNft.getOwner(this.tokenId).then((data)=> {
-          this.owner = data;
-      })      
+    //   this.basicNft.getOwner(this.tokenId).then((data)=> {
+    //       this.owner = data;
+    //   })      
+
+    this.getCollection();
+    //this.getMetadata();
+
 
 
     
@@ -255,6 +307,36 @@ export default {
   },
 
   methods: {
+
+      async getCollection() {
+          this.factory.getCollection(this.collectionId).then((data)=> {
+              console.log(data)
+
+              this.creator = data['creator'];
+              this.collectionAddress = data['alamat']
+
+              const collection = new ethers.Contract(data['alamat'], abi, provider);          
+              
+              collection.ownerOf(this.tokenId).then((data)=> {
+                  this.owner = data;
+              })
+
+              collection.tokenURI(this.tokenId).then((tokenUri)=> {
+                axios.get('https://cloudflare-ipfs.com/ipfs/' + tokenUri + '/metadata.json').then((response) => {
+                    const maxLength = response.data['image'].length;
+                    let imageUrl = response.data['image'].substring(7, maxLength)
+                    let data = response.data;
+                    data['imageUrl'] = imageUrl; 
+                    this.metadata = data;
+                    this.imageUrl = 'https://cloudflare-ipfs.com/ipfs/' + data['imageUrl']
+                })  
+  
+              })
+
+          })
+      },
+
+
 
   }
 }

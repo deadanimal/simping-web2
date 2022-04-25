@@ -3,10 +3,10 @@ import { ethers } from "ethers";
 import { useUserStore } from '@/stores/user'
 
 const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
-const address = "0x812a9A4E2B0BE9603f670FD537a62208B5D33FD9";
+const address = "0xf6a1D04a99f3F9EAAc37a16F991EBF21E69c9cdD";
 const abi = [
     "event Created(uint256 indexed,address indexed,address indexed,string,string)",
-    "event Minted(address indexed,address indexed,address indexed,string)",
+    "event Minted(uint256 indexed, address indexed,address indexed,address,string, uint256)",
     "event OwnershipTransferred(address indexed,address indexed)",
     "function create(string,string) payable",
     "function fee() view returns (uint256)",
@@ -76,8 +76,10 @@ export const useFactoryStore = defineStore({
     
   id: 'factory',
   state: () => ({
-        mintedEvents: null,
-        mintedEventCount: 0,
+        mints: null,
+        mintCount: 0,
+        allCollectionsCreateds: null,
+        allCollectionsCreatedCount: 0,
         collectionsCreateds: null,
         collectionsCreatedCount: 0
   }),
@@ -103,22 +105,44 @@ export const useFactoryStore = defineStore({
     
     async eventMintedByUser() {
         const user = useUserStore();
-        const filterAll = contract.filters.Minted(null, user.walletAddress, null, null);
+        const filterAll = contract.filters.Minted(null, null, user.walletAddress, null, null, null);
         const events = await contract.queryFilter(filterAll);
+        console.log(events)
         this.mintedEvents = events;
         this.mintedEventCount = events.length;
-    },      
+    },   
+    
+    async getAllCollectionsCreated() {
+        const filterAll = contract.filters.Created(null, null, null, null, null);
+        const events = await contract.queryFilter(filterAll);        
+        let collections = [];
+        for (var i = 0; i < events.length; i++) {
+            let data = {
+                blockHash: events[i]['blockHash'],
+                blockNumber: events[i]['blockNumber'],
+                collectionId: ethers.utils.formatUnits(events[i]['args'][0], 0),
+                collectionAddress: events[i]['args'][1],
+                collectionCreator: events[i]['args'][2],
+                collectionName: events[i]['args'][3],
+                collectionSymbol: events[i]['args'][4],
+            }
+            collections.push(data);
 
-    async getCollectionsCreatedByUser() {
-        const user = useUserStore();
-        const filterAll = contract.filters.Created(null, null, user.walletAddress, null, null);
+        }
+        console.log(collections)
+        this.allCollectionsCreated = collections;
+        this.allCollectionsCreatedCount = collections.length;
+    },    
+
+    async getCollectionsCreatedByUser(userAddress) {
+        const filterAll = contract.filters.Created(null, null, userAddress, null, null);
         const events = await contract.queryFilter(filterAll);
         let collections = [];
         for (var i = 0; i < events.length; i++) {
             let data = {
                 blockHash: events[i]['blockHash'],
                 blockNumber: events[i]['blockNumber'],
-                collectionId: events[i]['args'][0],
+                collectionId: ethers.utils.formatUnits(events[i]['args'][0], 0),
                 collectionAddress: events[i]['args'][1],
                 collectionCreator: events[i]['args'][2],
                 collectionName: events[i]['args'][3],
@@ -132,12 +156,37 @@ export const useFactoryStore = defineStore({
         this.collectionsCreatedCount = collections.length;
     },
 
+
+    async getMintsByUser(userAddress) {
+        const filterAll = contract.filters.Minted(null, null, userAddress, null, null, null);
+        const events = await contract.queryFilter(filterAll);
+        let mints = [];
+        for (var i = 0; i < events.length; i++) {
+            let data = {
+                blockHash: events[i]['blockHash'],
+                blockNumber: events[i]['blockNumber'],
+                collectionId: events[i]['args'][0],
+                collectionAddress: events[i]['args'][1],
+                minter: events[i]['args'][2],
+                receiver: events[i]['args'][3],
+                tokenUri: events[i]['args'][4],
+                tokenId: events[i]['args'][5],
+            }
+            mints.push(data);
+
+        }
+
+        this.mints = mints;
+        this.mintCount = mints.length;
+    },    
+
     async create(name, symbol) {
         const txData = await contract.populateTransaction.create(name, symbol);
         return txData;
     },
 
     async mint(collectionId, to, uri) {
+        console.log(collectionId)
         const txData = await contract.populateTransaction.mint(collectionId, to, uri);
         return txData;        
     },

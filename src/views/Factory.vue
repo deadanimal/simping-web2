@@ -60,8 +60,18 @@
 
                   <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+
+                      <div>
+                        <label for="about" class="block text-sm font-medium text-gray-700"> Collection </label>
+                        <div class="mt-1">
+                          <select v-model="collectionIdToBeMinted" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                            <option v-for="collection in collections" :key="collection.collectionAddress" :value="collection.collectionId">{{collection.collectionName}} ({{collection.collectionSymbol}})</option>
+                          </select> 
+                        </div>
+                      </div>
+                                            
                       <div class="grid grid-cols-3 gap-6">
-                        <div class="col-span-3 sm:col-span-2">
+                        <div class="col-span-3 sm:col-span-3">
                           <label for="company-website" class="block text-sm font-medium text-gray-700"> Name </label>
                           <div class="mt-1 flex rounded-md shadow-sm">
                             <input type="text" v-model="name" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
@@ -69,12 +79,16 @@
                         </div>
                       </div>
 
+
+
+                     
+
                       <div>
                         <label for="about" class="block text-sm font-medium text-gray-700"> Description </label>
                         <div class="mt-1">
                           <textarea v-model="description" rows="3" class="shadow-sm focus:ring-green-500 focus:border-green-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
                         </div>
-                        <p class="mt-2 text-sm text-gray-500">Brief description for your profile. URLs are hyperlinked.</p>
+                        <p class="mt-2 text-sm text-gray-500">Brief description of your newly minted SIMP.</p>
                       </div>
 
                       <div>
@@ -113,7 +127,7 @@
                       </div> -->
                     </div>
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6" v-if="metadataJsonUrl">
-                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="mintNFT()">Mint</button>
+                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="mintCollection()">Mint SIMP</button>
                     </div>
                   </div>
 
@@ -163,16 +177,19 @@ export default {
         description: null,
         metadataJsonUrl: null,
         collectionName: null,
-        collectionSymbol: null
+        collectionSymbol: null,
+        collections: [],
+        collectionIdToBeMinted: null,
       }
     },
 
     mounted() {
 
-      this.factory.getCollectionsCreatedByUser().then(()=> {
+      this.factory.getCollectionsCreatedByUser(this.user.walletAddress).then(()=> {
         console.log(this.factory.collectionsCreatedCount)
-        const lol = this.factory.collectionsCreated;
-        console.log(lol[0])
+        this.collections = [];
+        this.collections = this.factory.collectionsCreated;
+        console.log(this.collections)
       })
 
     },
@@ -220,14 +237,14 @@ export default {
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=10.00";
             window.open(url);          
         },
-        
-        async mintNFT() {
 
-          let data = await this.basicNft.mint(this.user.walletAddress, this.metadataJsonUrl);
-          
-            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
-            window.open(url);
-        }
+        async mintCollection() {
+
+            let data = await this.factory.mint(this.collectionIdToBeMinted, this.user.walletAddress, this.metadataJsonUrl);
+            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=0.10";
+            window.open(url);          
+        },        
+        
 
     }
 }
