@@ -358,6 +358,8 @@ export default {
         }
       });
 
+      this.getInstagramPosts();
+
 
 
     },
@@ -428,7 +430,13 @@ export default {
         
         onCollectionChange(event) {
             console.log(event.target.value)
-        }        
+        },
+        
+        getInstagramPosts() {
+            const data = fetch('https://graph.instagram.com/v13.0/me/media?access_token=' + this.user.instagramAccessToken);
+            console.log(data)
+
+        }
         
 
     }
