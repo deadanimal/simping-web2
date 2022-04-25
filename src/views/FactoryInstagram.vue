@@ -434,7 +434,7 @@ export default {
         },
         
         async getInstagramPosts() {
-            const response = await axios.get('https://graph.instagram.com/v13.0/me/media?access_token=' + this.user.instagramAccessToken);
+            const response = await axios.get('https://graph.instagram.com/v13.0/me/media?fields=id,caption,media_type,media_url,thumbnail_url,timestamp,username&access_token=' + this.user.instagramAccessToken);
             console.log(response)
 
         }
