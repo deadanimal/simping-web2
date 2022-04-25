@@ -136,6 +136,109 @@
           </div>
 
 
+          <div class="mt-4">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+              <div class="md:col-span-1">
+                <div class="px-4 sm:px-0">
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">Initialise SIMP</h3>
+                  <p class="mt-1 text-sm text-gray-600">Enable your SIMP collection to be on the marketplace</p>
+                </div>
+              </div>
+              <div class="mt-5 md:mt-0 md:col-span-2">
+
+
+                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
+                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+
+
+                        <div>
+                          <label for="about" class="block text-sm font-medium text-gray-700"> Collection </label>
+                          <div class="mt-1">
+                            <select v-model="collectionIdToBeInitialised" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                              <option v-for="collection in collections" :key="collection.collectionAddress" :value="collection.collectionId">{{collection.collectionName}} ({{collection.collectionSymbol}})</option>
+                            </select> 
+                          </div>
+                        </div>
+
+
+                      <div class="grid grid-cols-3 gap-6">
+                        
+                        <div class="col-span-3 sm:col-span-3">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Royalty </label>
+                          <div class="mt-1 flex rounded-md shadow-sm">
+                            <input type="number" min="0.01" max="15.00" step="0.01" v-model="royalty" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                          </div>
+                        </div>                        
+                      </div>
+
+
+
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="initialiseCollection()">Initialise Collection</button>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>          
+
+
+          <!-- <div class="mt-4">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+              <div class="md:col-span-1">
+                <div class="px-4 sm:px-0">
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">Sell SIMP</h3>
+                  <p class="mt-1 text-sm text-gray-600">Sell your SIMP on the marketplace and make profit!</p>
+                </div>
+              </div>
+              <div class="mt-5 md:mt-0 md:col-span-2">
+
+
+                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
+                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+
+
+                        <div>
+                          <label for="about" class="block text-sm font-medium text-gray-700"> Collection </label>
+                          <div class="mt-1">
+                            <select v-model="collectionIdToBeSold" @change="onCollectionChange($event)" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                              <option v-for="collection in collections" :key="collection.collectionAddress" :value="collection.collectionAddress">{{collection.collectionName}} ({{collection.collectionSymbol}})</option>
+                            </select> 
+                          </div>
+                        </div>
+
+                       <div>
+                          <label for="about" class="block text-sm font-medium text-gray-700"> Token </label>
+                          <div class="mt-1">
+                            <select v-model="tokenIdToBeSold" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                              <option v-for="token in tokens" :key="token.collectionAddress" :value="token.collectionId">{{token.collectionName}}</option>
+                            </select> 
+                          </div>
+                        </div>                        
+
+
+                      <div class="grid grid-cols-3 gap-6">
+                        
+                        <div class="col-span-3 sm:col-span-3">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Price </label>
+                          <div class="mt-1 flex rounded-md shadow-sm">
+                            <input type="number" min="1" v-model="sellingPrice" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                          </div>
+                        </div>                        
+                      </div>
+
+
+
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="initialiseCollection()">Initialise Collection</button>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>      -->
 
     </div>
   </div>
@@ -148,10 +251,51 @@ import { useBasicNftStore } from '@/stores/basicNft'
 import { useFactoryStore } from '@/stores/factory'
 import { useUserStore } from '@/stores/user'
 import { NFTStorage } from 'nft.storage'
+import { ethers } from "ethers";
 
 const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGE4MzViRTI0Y2QxNEUwZTREMjVENTY0NGRBMDM0RjczQTExNzkyZTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0ODM5MjY0ODIyNywibmFtZSI6InNpbXBpbmcifQ.s9oheLM37vF4kHTs-lOzTCYCUODTERg2amyV8rCPtOk';
 const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
 
+const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
+const address = "0x4193937c113A97978B469DA3F3906B7bc080d7Db";
+const abi = [
+  "event AuctionCompleted(uint256 indexed,address indexed,address indexed,uint256)",
+  "event AuctionCreated(uint256 indexed,address indexed,uint256)",
+  "event BidCreated(uint256 indexed,uint256 indexed,address indexed,uint256)",
+  "event ForSale(uint256 indexed,address indexed,uint256)",
+  "event Initialised(uint256 indexed,uint256,address indexed)",
+  "event NotForSale(uint256 indexed,address indexed)",
+  "event OwnershipTransferred(address indexed,address indexed)",
+  "event SaleCompleted(uint256 indexed,address indexed,address indexed,uint256)",
+  "event SendAmount(address indexed,address indexed,uint256,uint256 indexed)",
+  "event TokenForSale(address indexed,uint256 indexed,uint256,uint256)",
+  "event TokenSold(address indexed,uint256 indexed,uint256,uint256,uint256)",
+  "function acceptBid(uint256)",
+  "function auctionToken(uint256,address,uint256,uint256)",
+  "function bidToken(uint256) payable",
+  "function buy(uint256) payable",
+  "function cancelFee() view returns (uint256)",
+  "function commissionFee() view returns (uint256)",
+  "function factory() view returns (address)",
+  "function getAuction(uint256) view returns (uint256, address, uint256, uint256, address, uint256, bool)",
+  "function getBalance() view returns (uint256)",
+  "function getBid(uint256) view returns (uint256, address, uint256)",
+  "function getHighestBid(uint256) view returns (uint256, address)",
+  "function getSale(uint256) view returns (address, address, uint256, address, uint256)",
+  "function initialise(uint256,uint256)",
+  "function isCollectionInitialised(uint256) view returns (bool, uint256)",
+  "function minimumPrice() view returns (uint256)",
+  "function owner() view returns (address)",
+  "function registrar() view returns (address)",
+  "function renounceOwnership()",
+  "function retract(uint256) payable",
+  "function sell(uint256,address,uint256,uint256)",
+  "function setFees(uint256,uint256,uint256)",
+  "function transferOwnership(address)",
+  "function withdraw(address,uint256)"
+]
+
+const contract = new ethers.Contract(address, abi, provider);
 
 export default {
 
@@ -180,6 +324,11 @@ export default {
         collectionSymbol: null,
         collections: [],
         collectionIdToBeMinted: null,
+        collectionIdToBeInitialised: null,
+        collectionIdToBeSold: null,
+        tokenIdToBeSold: null,
+        royalty: 0.01,
+        sellingPrice: 1
       }
     },
 
@@ -189,8 +338,15 @@ export default {
         console.log(this.factory.collectionsCreatedCount)
         this.collections = [];
         this.collections = this.factory.collectionsCreated;
-        console.log(this.collections)
-      })
+        for (var i=0; i < this.collections.length; i++) {
+          console.log(this.collections[i])
+          contract.isCollectionInitialised(parseInt(this.collections[i].collectionId)).then((data)=> {
+            console.log(data);
+          })
+        }
+      });
+
+
 
     },
 
@@ -243,7 +399,24 @@ export default {
             let data = await this.factory.mint(this.collectionIdToBeMinted, this.user.walletAddress, this.metadataJsonUrl);
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=0.10";
             window.open(url);          
-        },        
+        },  
+        
+        async getInitialisedByUser() {
+          const filterAll = contract.filters.Initialised(null, null, this.user.walletAddress);
+          const events = await contract.queryFilter(filterAll);
+          console.log(events);
+        },
+
+        async initialiseCollection() {
+
+            let data = await contract.populateTransaction.initialise(this.collectionIdToBeInitialised, parseInt(this.royalty * 100));
+            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
+            window.open(url);          
+        },         
+        
+        onCollectionChange(event) {
+            console.log(event.target.value)
+        }        
         
 
     }

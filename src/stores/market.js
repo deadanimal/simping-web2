@@ -3,16 +3,19 @@ import { ethers } from "ethers";
 
 
 const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
-const address = "0x9D3153048f174f6F119BEb490572b65800a1e243";
+const address = "0x4193937c113A97978B469DA3F3906B7bc080d7Db";
 const abi = [
   "event AuctionCompleted(uint256 indexed,address indexed,address indexed,uint256)",
   "event AuctionCreated(uint256 indexed,address indexed,uint256)",
   "event BidCreated(uint256 indexed,uint256 indexed,address indexed,uint256)",
   "event ForSale(uint256 indexed,address indexed,uint256)",
+  "event Initialised(uint256 indexed,uint256,address indexed)",
   "event NotForSale(uint256 indexed,address indexed)",
   "event OwnershipTransferred(address indexed,address indexed)",
   "event SaleCompleted(uint256 indexed,address indexed,address indexed,uint256)",
   "event SendAmount(address indexed,address indexed,uint256,uint256 indexed)",
+  "event TokenForSale(address indexed,uint256 indexed,uint256,uint256)",
+  "event TokenSold(address indexed,uint256 indexed,uint256,uint256,uint256,address,address)",
   "function acceptBid(uint256)",
   "function auctionToken(uint256,address,uint256,uint256)",
   "function bidToken(uint256) payable",
@@ -26,6 +29,7 @@ const abi = [
   "function getHighestBid(uint256) view returns (uint256, address)",
   "function getSale(uint256) view returns (address, address, uint256, address, uint256)",
   "function initialise(uint256,uint256)",
+  "function isCollectionInitialised(uint256) view returns (bool, uint256)",
   "function minimumPrice() view returns (uint256)",
   "function owner() view returns (address)",
   "function registrar() view returns (address)",

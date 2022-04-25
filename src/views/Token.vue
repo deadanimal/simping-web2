@@ -57,7 +57,7 @@
 
 
 
-    <div class="md:flex md:items-center md:justify-between my-4">
+    <div class="md:flex md:items-center md:justify-between my-4" v-if="heldByContract">
         <div class="flex-1 min-w-0">
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">{{latestPrice}} BFT</h2>
         </div>
@@ -65,10 +65,9 @@
           <!-- <router-link to="/facebook-minter">
             <button @click="create('asd', 'asd')" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
           </router-link>           -->          
-            <button type="button" v-if="canBuy" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Buy</button>          
-            <button type="button" v-if="canSell" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Sell</button>          
-            <button type="button" v-if="canBid" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Bid</button>          
-            <button type="button" v-if="canAuction" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Auction</button>          
+            <button type="button" @click="buyToken()" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Buy</button>          
+            <!-- <button type="button" v-if="canBid" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Bid</button>           -->
+            <!-- <button type="button" v-if="canAuction" class="mr-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Auction</button>           -->
         </div>
     </div>
 
@@ -89,7 +88,6 @@
           <img :src="imageUrl" :alt="imageUrl" class="w-full h-full object-center object-cover" />
         </div>
       </div>
-
 
     <div class="border-t border-gray-200 px-4 pb-5 sm:px-6">
       <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 flex items-center">
@@ -126,42 +124,82 @@
   </div>
 
 
-    <div class="-mx-4 mt-8 overflow-hidden shadow ring-2 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
+    <div class="-mx-4 mt-8 overflow-hidden shadow ring-2 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg" v-if="soldEvents.length > 0">
       <table class="min-w-full divide-y divide-gray-300">
         <thead class="bg-gray-50">
           <tr>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Block</th>
-            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Transaction</th>
-            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">Email</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Timestamp</th>
+            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Buyer</th>
+            <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">Seller</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
             <!-- <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
               <span class="sr-only">Edit</span>
             </th> -->
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
-          <tr v-for="person in people" :key="person.email">
+          <tr v-for="item in soldEvents" :key="item.email">
             <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-              {{ person.name }}
+              {{ item.timestamp }}
               <dl class="font-normal lg:hidden">
-                <dt class="sr-only">Title</dt>
-                <dd class="mt-1 truncate text-gray-700">{{ person.title }}</dd>
-                <dt class="sr-only sm:hidden">Email</dt>
-                <dd class="mt-1 truncate text-gray-500 sm:hidden">{{ person.email }}</dd>
+                <dt class="sr-only">Buyer</dt>
+                <dd class="mt-1 truncate text-gray-700">{{ item.shortenedBuyer }}</dd>
+                <dt class="sr-only">Seller</dt>
+                <dd class="mt-1 truncate text-gray-700">{{ item.shortenedSeller }}</dd>                
               </dl>
             </td>
-            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ person.title }}</td>
-            <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ person.email }}</td>
-            <td class="px-3 py-4 text-sm text-gray-500">{{ person.role }}</td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ item.shortenedBuyer }}</td>
+            <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{{ item.shortenedSeller }}</td>
+            <td class="px-3 py-4 text-sm text-gray-500">{{ item.price }}</td>
             <!-- <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
               <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                >Edit<span class="sr-only">, {{ person.name }}</span></a
+                >Edit<span class="sr-only">, {{ item.name }}</span></a
               >
             </td> -->
           </tr>
         </tbody>
       </table>
     </div>
+
+
+          <div class="mt-6" v-if="owner == user.walletAddress">
+            <div class="md:grid md:grid-cols-3 md:gap-6">
+              <div class="md:col-span-1">
+                <div class="px-4 sm:px-0">
+                  <h3 class="text-lg font-medium leading-6 text-gray-900">Sell SIMP</h3>
+                  <p class="mt-1 text-sm text-gray-600">Sell your SIMP on the marketplace and make profit!</p>
+                </div>
+              </div>
+              <div class="mt-5 md:mt-0 md:col-span-2">
+
+
+                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
+                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                   
+
+
+                      <div class="grid grid-cols-3 gap-6">
+                        
+                        <div class="col-span-3 sm:col-span-3">
+                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Price </label>
+                          <div class="mt-1 flex rounded-md shadow-sm">
+                            <input type="number" min="10" step="1" v-model="sellingPrice" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                          </div>
+                        </div>                        
+                      </div>
+
+
+
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" @click="approveCollection()">Approve Collection</button>
+                      <button type="button" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="sellToken()">Sell Token</button>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>     
 
 
 
@@ -224,6 +262,44 @@ const abi = [
     "function transferOwnership(address)",
     "function unpause()"
   ]
+
+const address = "0x4193937c113A97978B469DA3F3906B7bc080d7Db";
+const marketAbi = [
+  "event AuctionCompleted(uint256 indexed,address indexed,address indexed,uint256)",
+  "event AuctionCreated(uint256 indexed,address indexed,uint256)",
+  "event BidCreated(uint256 indexed,uint256 indexed,address indexed,uint256)",
+  "event ForSale(uint256 indexed,address indexed,uint256)",
+  "event Initialised(uint256 indexed,uint256,address indexed)",
+  "event NotForSale(uint256 indexed,address indexed)",
+  "event OwnershipTransferred(address indexed,address indexed)",
+  "event SaleCompleted(uint256 indexed,address indexed,address indexed,uint256)",
+  "event SendAmount(address indexed,address indexed,uint256,uint256 indexed)",
+  "event TokenForSale(address indexed,uint256 indexed,uint256,uint256)",
+  "event TokenSold(address indexed,uint256 indexed,uint256,uint256,uint256,address,address)",
+  "function acceptBid(uint256)",
+  "function auctionToken(uint256,address,uint256,uint256)",
+  "function bidToken(uint256) payable",
+  "function buy(uint256) payable",
+  "function cancelFee() view returns (uint256)",
+  "function commissionFee() view returns (uint256)",
+  "function factory() view returns (address)",
+  "function getAuction(uint256) view returns (uint256, address, uint256, uint256, address, uint256, bool)",
+  "function getBalance() view returns (uint256)",
+  "function getBid(uint256) view returns (uint256, address, uint256)",
+  "function getHighestBid(uint256) view returns (uint256, address)",
+  "function getSale(uint256) view returns (address, address, uint256, address, uint256)",
+  "function initialise(uint256,uint256)",
+  "function isCollectionInitialised(uint256) view returns (bool, uint256)",
+  "function minimumPrice() view returns (uint256)",
+  "function owner() view returns (address)",
+  "function registrar() view returns (address)",
+  "function renounceOwnership()",
+  "function retract(uint256) payable",
+  "function sell(uint256,address,uint256,uint256)",
+  "function setFees(uint256,uint256,uint256)",
+  "function transferOwnership(address)",
+  "function withdraw(address,uint256)"
+  ]  
   
 
 
@@ -259,16 +335,21 @@ export default {
           collectionId: null,
           collectionAddress: null,
           tokenId: null,
-          latestPrice: 0.00,
+          latestPrice: 0,
           metadata: null,
           name: null,
           description: null,
           creator: null,
           owner: "-",
-          canBuy: true,
-          canSell: true,
-          canAuction: true,
-          canBid: true
+          canBuy: false,
+          canSell: false,
+          canAuction: false,
+          canBid: false,
+          sellingPrice: 10,
+          heldByContract: false,
+          sellEvents: [],
+          latestSaleId: null,
+          soldEvents: [],
       }
       
   },
@@ -303,7 +384,6 @@ export default {
 
 
     
-    
   },
 
   methods: {
@@ -319,6 +399,9 @@ export default {
               
               collection.ownerOf(this.tokenId).then((data)=> {
                   this.owner = data;
+                  if (data == "0x4193937c113A97978B469DA3F3906B7bc080d7Db") {
+                      this.heldByContract = true;
+                  }
               })
 
               collection.tokenURI(this.tokenId).then((tokenUri)=> {
@@ -334,7 +417,82 @@ export default {
               })
 
           })
+
+          const market = new ethers.Contract(address, marketAbi, provider);   
+          market.isCollectionInitialised(this.collectionId).then((data)=> {
+              console.log(data)
+          })       
+
+        const sellFilter = market.filters.TokenForSale(this.collectionAddress, parseInt(this.tokenId), null);
+        let sellEvents = await market.queryFilter(sellFilter);      
+        this.sellEvents = [];  
+        for(let i=0;i<sellEvents.length;i++) {
+            const data_ = {
+                address: sellEvents[i]['args'][0],
+                token: ethers.utils.formatUnits(sellEvents[i]['args'][1], 0),
+                saleId: ethers.utils.formatUnits(sellEvents[i]['args'][2], 0),
+                timestamp: ethers.utils.formatUnits(sellEvents[i]['args'][3], 0),
+            }
+            this.sellEvents.push(data_)         
+        }   
+
+        if (this.sellEvents.length > 0) {
+            let saleId = parseInt(this.sellEvents[this.sellEvents.length-1]['saleId'])
+
+            market.getSale(saleId).then((data)=> {
+                this.latestSaleId = saleId;
+                this.latestPrice = parseInt(ethers.utils.formatUnits(data[2], 18))
+            }) 
+        }
+
+        const soldFilter = market.filters.TokenSold(this.collectionAddress, parseInt(this.tokenId), null, null, null, null, null);
+        let soldEvents = await market.queryFilter(soldFilter);      
+        this.soldEvents = [];  
+        for(let i=0;i<soldEvents.length;i++) {
+            const data_ = {
+                address: soldEvents[i]['args'][0],
+                token: ethers.utils.formatUnits(soldEvents[i]['args'][1], 0),
+                saleId: ethers.utils.formatUnits(soldEvents[i]['args'][2], 0),
+                price: parseInt(ethers.utils.formatUnits(soldEvents[i]['args'][3], 18)),
+                timestamp: ethers.utils.formatUnits(soldEvents[i]['args'][4], 0),
+                buyer: soldEvents[i]['args'][5],
+                shortenedBuyer: soldEvents[i]['args'][5].substring(0, 6) + "..." + soldEvents[i]['args'][5].substring(soldEvents[i]['args'][5].length - 4, soldEvents[i]['args'][5].length), 
+                seller: soldEvents[i]['args'][6],
+                shortenedSeller: soldEvents[i]['args'][6].substring(0, 6) + "..." + soldEvents[i]['args'][6].substring(soldEvents[i]['args'][6].length - 4, soldEvents[i]['args'][6].length), 
+            }
+            this.soldEvents.push(data_)         
+        }       
+        this.soldEvents.sort((a,b) => b.timestamp - a.timestamp); // b - a for reverse sort
+
+        console.log(this.soldEvents)   
+    
+
+
       },
+
+      async approveCollection() {
+            const collection = new ethers.Contract(this.collectionAddress, abi, provider); 
+            let data = await collection.populateTransaction.setApprovalForAll("0x4193937c113A97978B469DA3F3906B7bc080d7Db", true);
+            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
+            window.open(url); 
+      },
+
+
+      async sellToken() {
+                         
+            const market = new ethers.Contract(address, marketAbi, provider);   
+            let data = await market.populateTransaction.sell(this.collectionId, this.collectionAddress, this.tokenId, ethers.utils.parseUnits(this.sellingPrice.toString(), 18));
+            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
+            window.open(url);              
+      },
+
+      async buyToken() {
+                         
+            const market = new ethers.Contract(address, marketAbi, provider);   
+            let data = await market.populateTransaction.buy(this.latestSaleId);
+            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=" + this.latestPrice;
+            window.open(url);              
+      }      
 
 
 
