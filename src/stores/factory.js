@@ -76,6 +76,8 @@ export const useFactoryStore = defineStore({
     
   id: 'factory',
   state: () => ({
+        allMints: null,
+        allMintCount: 0,      
         mints: null,
         mintCount: 0,
         allCollectionsCreateds: null,
@@ -132,7 +134,29 @@ export const useFactoryStore = defineStore({
         console.log(collections)
         this.allCollectionsCreated = collections;
         this.allCollectionsCreatedCount = collections.length;
-    },    
+    },   
+    
+    async getAllMints() {
+        const filterAll = contract.filters.Minted(null, null, null, null, null, null);
+        const events = await contract.queryFilter(filterAll);
+        let mints = [];
+        for (var i = 0; i < events.length; i++) {
+            let data = {
+                blockHash: events[i]['blockHash'],
+                blockNumber: events[i]['blockNumber'],
+                collectionId: events[i]['args'][0],
+                collectionAddress: events[i]['args'][1],
+                minter: events[i]['args'][2],
+                receiver: events[i]['args'][3],
+                tokenUri: events[i]['args'][4],
+                tokenId: events[i]['args'][5],
+            }
+            mints.push(data);
+
+        }
+        this.allMints = mints;
+        this.allMintCount = mints.length;
+    },     
 
     async getCollectionsCreatedByUser(userAddress) {
         const filterAll = contract.filters.Created(null, null, userAddress, null, null);
