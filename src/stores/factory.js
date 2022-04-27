@@ -6,17 +6,17 @@ const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.
 const address = "0x9A93638B450273C290b5Bd038b7E4E2d59368A40";
 const abi = [
     "event Created(uint256 indexed,address indexed,address indexed,string,string)",
-    "event Minted(uint256 indexed, address indexed,address indexed,address,string, uint256)",
+    "event Minted(uint256 indexed,address indexed,address indexed,address,string,uint256)",
     "event OwnershipTransferred(address indexed,address indexed)",
     "function create(string,string) payable",
     "function fee() view returns (uint256)",
     "function getBalance() view returns (uint256)",
     "function getCollection(uint256) view returns (address, address, string, string)",
+    "function getCollectionCreated(address) view returns (bool)",
     "function getCollectionCreator(uint256) view returns (address)",
     "function mint(uint256,address,string) payable",
     "function owner() view returns (address)",
     "function renounceOwnership()",
-    "function selfGovern(uint256,address) payable",
     "function setFee(uint256)",
     "function transferOwnership(address)",
     "function withdraw(address,uint256)"
@@ -83,7 +83,10 @@ export const useFactoryStore = defineStore({
         allCollectionsCreateds: null,
         allCollectionsCreatedCount: 0,
         collectionsCreateds: null,
-        collectionsCreatedCount: 0
+        collectionsCreatedCount: 0,
+
+        hasCollection: false,
+
   }),
   getters: {
 
@@ -109,7 +112,6 @@ export const useFactoryStore = defineStore({
         const user = useUserStore();
         const filterAll = contract.filters.Minted(null, null, user.walletAddress, null, null, null);
         const events = await contract.queryFilter(filterAll);
-        console.log(events)
         this.mintedEvents = events;
         this.mintedEventCount = events.length;
     },   
@@ -254,7 +256,15 @@ export const useFactoryStore = defineStore({
     async getCollectionCreator(collectionId) {
         const creator = await contract.getCollectionCreator(collectionId);
         return creator;        
-    },    
+    }, 
+    
+    async doesUserHasCollection() {
+        const user = useUserStore();
+        const has = await contract.getCollectionCreator(user.walletAddress);
+        this.hasCollection = has
+        return has;
+    }
+    
 
 
   }

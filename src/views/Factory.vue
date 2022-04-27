@@ -5,24 +5,24 @@
 
 
 
-    <div class="md:flex md:items-center md:justify-between py-4">
-        <div class="flex-1 min-w-0">
-          <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Factory</h2>
-        </div>
-        <div class="mt-4 flex md:mt-0 md:ml-4">
-          <router-link to="/factory/instagram">
-            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Instagram</button>
-          </router-link>          
+          <div class="md:flex md:items-center md:justify-between py-4">
+              <div class="flex-1 min-w-0">
+                <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Factory</h2>
+              </div>
+              <div class="mt-4 flex md:mt-0 md:ml-4">
+                <router-link to="/factory/instagram">
+                  <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Instagram</button>
+                </router-link>          
 
-          <!-- <router-link to="/factory/instagram">
-            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Instagram</button>
-          </router-link>                        -->
-        </div>
-    </div>      
+                <!-- <router-link to="/factory/instagram">
+                  <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">Instagram</button>
+                </router-link>                        -->
+              </div>
+          </div>      
       
         
 
-          <div class="mt-4">
+          <div class="mt-4" v-if="!hasCollection">
             <div class="md:grid md:grid-cols-3 md:gap-6">
               <div class="md:col-span-1">
                 <div class="px-4 sm:px-0">
@@ -64,7 +64,7 @@
           </div>
 
 
-          <div class="mt-4">
+          <div class="mt-4" v-else>
             <div class="md:grid md:grid-cols-3 md:gap-6">
               <div class="md:col-span-1">
                 <div class="px-4 sm:px-0">
@@ -77,16 +77,7 @@
 
                   <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
-
-                      <div>
-                        <label for="about" class="block text-sm font-medium text-gray-700"> Collection </label>
-                        <div class="mt-1">
-                          <select v-model="collectionIdToBeMinted" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
-                            <option v-for="collection in collections" :key="collection.collectionAddress" :value="collection.collectionId">{{collection.collectionName}} ({{collection.collectionSymbol}})</option>
-                          </select> 
-                        </div>
-                      </div>
-                                            
+              
                       <div class="grid grid-cols-3 gap-6">
                         <div class="col-span-3 sm:col-span-3">
                           <label for="company-website" class="block text-sm font-medium text-gray-700"> Name </label>
@@ -268,51 +259,9 @@ import { useBasicNftStore } from '@/stores/basicNft'
 import { useFactoryStore } from '@/stores/factory'
 import { useUserStore } from '@/stores/user'
 import { NFTStorage } from 'nft.storage'
-import { ethers } from "ethers";
 
 const NFT_STORAGE_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGE4MzViRTI0Y2QxNEUwZTREMjVENTY0NGRBMDM0RjczQTExNzkyZTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0ODM5MjY0ODIyNywibmFtZSI6InNpbXBpbmcifQ.s9oheLM37vF4kHTs-lOzTCYCUODTERg2amyV8rCPtOk';
 const client = new NFTStorage({ token: NFT_STORAGE_TOKEN })
-
-const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
-const address = "0xa4Fb936C9CBD0c57501f6Ba5e90CB3621303b39E";
-const abi = [
-  "event AuctionCompleted(uint256 indexed,address indexed,address indexed,uint256)",
-  "event AuctionCreated(uint256 indexed,address indexed,uint256)",
-  "event BidCreated(uint256 indexed,uint256 indexed,address indexed,uint256)",
-  "event ForSale(uint256 indexed,address indexed,uint256)",
-  "event Initialised(uint256 indexed,uint256,address indexed)",
-  "event NotForSale(uint256 indexed,address indexed)",
-  "event OwnershipTransferred(address indexed,address indexed)",
-  "event SaleCompleted(uint256 indexed,address indexed,address indexed,uint256)",
-  "event SendAmount(address indexed,address indexed,uint256,uint256 indexed)",
-  "event TokenForSale(address indexed,uint256 indexed,uint256,uint256)",
-  "event TokenSold(address indexed,uint256 indexed,uint256,uint256,uint256)",
-  "function acceptBid(uint256)",
-  "function auctionToken(uint256,address,uint256,uint256)",
-  "function bidToken(uint256) payable",
-  "function buy(uint256) payable",
-  "function cancelFee() view returns (uint256)",
-  "function commissionFee() view returns (uint256)",
-  "function factory() view returns (address)",
-  "function getAuction(uint256) view returns (uint256, address, uint256, uint256, address, uint256, bool)",
-  "function getBalance() view returns (uint256)",
-  "function getBid(uint256) view returns (uint256, address, uint256)",
-  "function getHighestBid(uint256) view returns (uint256, address)",
-  "function getSale(uint256) view returns (address, address, uint256, address, uint256)",
-  "function initialise(uint256,uint256)",
-  "function isCollectionInitialised(uint256) view returns (bool, uint256)",
-  "function minimumPrice() view returns (uint256)",
-  "function owner() view returns (address)",
-  "function registrar() view returns (address)",
-  "function renounceOwnership()",
-  "function retract(uint256) payable",
-  "function sell(uint256,address,uint256,uint256)",
-  "function setFees(uint256,uint256,uint256)",
-  "function transferOwnership(address)",
-  "function withdraw(address,uint256)"
-]
-
-const contract = new ethers.Contract(address, abi, provider);
 
 export default {
 
@@ -340,28 +289,25 @@ export default {
         collectionName: null,
         collectionSymbol: null,
         collections: [],
-        collectionIdToBeMinted: null,
-        collectionIdToBeInitialised: null,
         collectionIdToBeSold: null,
         tokenIdToBeSold: null,
         royalty: 10,
-        sellingPrice: 1
+        sellingPrice: 1,
+        hasCollection: false
       }
     },
 
     mounted() {
 
       this.factory.getCollectionsCreatedByUser(this.user.walletAddress).then(()=> {
-        console.log(this.factory.collectionsCreatedCount)
         this.collections = [];
         this.collections = this.factory.collectionsCreated;
-        for (var i=0; i < this.collections.length; i++) {
-          console.log(this.collections[i])
-          contract.isCollectionInitialised(parseInt(this.collections[i].collectionId)).then((data)=> {
-            console.log(data);
-          })
-        }
       });
+
+      this.factory.doesUserHasCollection().then(()=> {
+        this.hasCollection = this.factory.hasCollection;
+      })
+
 
 
 
@@ -406,30 +352,20 @@ export default {
 
         async createCollection() {
 
-            let data = await this.factory.create("user-" + this.collectionName, "user-" + this.collectionSymbol);          
+            let data = await this.factory.create(this.collectionName, this.collectionSymbol);          
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=10.00";
             window.open(url);          
         },
 
         async mintCollection() {
-
-            let data = await this.factory.mint(this.collectionIdToBeMinted, this.user.walletAddress, this.metadataJsonUrl);
+            
+            let data = await this.factory.mint(parseInt(this.collections[0].collectionId), this.user.walletAddress, this.metadataJsonUrl);
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'] + "&value=0.10";
             window.open(url);          
         },  
         
-        async getInitialisedByUser() {
-          const filterAll = contract.filters.Initialised(null, null, this.user.walletAddress);
-          const events = await contract.queryFilter(filterAll);
-          console.log(events);
-        },
 
-        async initialiseCollection() {
-
-            let data = await contract.populateTransaction.initialise(this.collectionIdToBeInitialised, parseInt(this.royalty * 100));
-            var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
-            window.open(url);          
-        },         
+        
         
         onCollectionChange(event) {
             console.log(event.target.value)
