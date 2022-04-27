@@ -10,55 +10,15 @@
         </div>
         <div class="mt-4 flex md:mt-0 md:ml-4">
           <a v-if="!user.instagramLoggedIn" href="https://api.instagram.com/oauth/authorize?client_id=298290545660406&redirect_uri=https://simping-api.onrender.com/instagram-redirect&scope=user_profile,user_media&response_type=code">
-            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Connect</button>
+            <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Connect</button>
           </a>     
-            <button type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Create Collection</button>                                     
+            
         </div>
     </div>        
       
         
         <div v-if="user.instagramLoggedIn">
 
-          <div class="mt-4">
-            <div class="md:grid md:grid-cols-3 md:gap-6">
-              <div class="md:col-span-1">
-                <div class="px-4 sm:px-0">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">Create SIMP collection</h3>
-                  <p class="mt-1 text-sm text-gray-600">Generate a collection contract for NFT on Bifrost blockchain.</p>
-                </div>
-              </div>
-              <div class="mt-5 md:mt-0 md:col-span-2">
-
-
-                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
-                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
-                      <div class="grid grid-cols-3 gap-6">
-                        <div class="col-span-3 sm:col-span-3">
-                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Name </label>
-                          <div class="mt-1 flex rounded-md shadow-sm">
-                            <input type="text" v-model="collectionName" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
-                          </div>
-                        </div>
-                        
-                        <div class="col-span-3 sm:col-span-3">
-                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Symbol </label>
-                          <div class="mt-1 flex rounded-md shadow-sm">
-                            <input type="text" v-model="collectionSymbol" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
-                          </div>
-                        </div>                        
-                      </div>
-
-
-
-                    </div>
-                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="createCollection()">Create Collection</button>
-                    </div>
-                  </div>
-
-              </div>
-            </div>
-          </div>
 
 
           <div class="mt-4">
@@ -150,52 +110,6 @@
           </div>
 
 
-          <div class="mt-4">
-            <div class="md:grid md:grid-cols-3 md:gap-6">
-              <div class="md:col-span-1">
-                <div class="px-4 sm:px-0">
-                  <h3 class="text-lg font-medium leading-6 text-gray-900">Initialise SIMP</h3>
-                  <p class="mt-1 text-sm text-gray-600">Enable your SIMP collection to be traded on the marketplace</p>
-                </div>
-              </div>
-              <div class="mt-5 md:mt-0 md:col-span-2">
-
-
-                  <div class="shadow ring-2 ring-black ring-opacity-5 sm:rounded-md sm:overflow-hidden">
-                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
-
-
-                        <div>
-                          <label for="about" class="block text-sm font-medium text-gray-700"> Collection </label>
-                          <div class="mt-1">
-                            <select v-model="collectionIdToBeInitialised" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
-                              <option v-for="collection in collections" :key="collection.collectionAddress" :value="collection.collectionId">{{collection.collectionName}} ({{collection.collectionSymbol}})</option>
-                            </select> 
-                          </div>
-                        </div>
-
-
-                      <div class="grid grid-cols-3 gap-6">
-                        
-                        <div class="col-span-3 sm:col-span-3">
-                          <label for="company-website" class="block text-sm font-medium text-gray-700"> Royalty </label>
-                          <div class="mt-1 flex rounded-md shadow-sm">
-                            <input type="number" min="0.01" max="15.00" step="0.01" v-model="royalty" class="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
-                          </div>
-                        </div>                        
-                      </div>
-
-
-
-                    </div>
-                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                      <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" @click="initialiseCollection()">Initialise Collection</button>
-                    </div>
-                  </div>
-
-              </div>
-            </div>
-          </div>    
 
         </div>      
 
