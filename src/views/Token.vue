@@ -263,7 +263,7 @@ const abi = [
     "function unpause()"
   ]
 
-const address = "0x4193937c113A97978B469DA3F3906B7bc080d7Db";
+const address = "0xa4Fb936C9CBD0c57501f6Ba5e90CB3621303b39E";
 const marketAbi = [
   "event AuctionCompleted(uint256 indexed,address indexed,address indexed,uint256)",
   "event AuctionCreated(uint256 indexed,address indexed,uint256)",
@@ -400,7 +400,7 @@ export default {
               
               collection.ownerOf(this.tokenId).then((data)=> {
                   this.owner = data;
-                  if (data == "0x4193937c113A97978B469DA3F3906B7bc080d7Db") {
+                  if (data == "0xa4Fb936C9CBD0c57501f6Ba5e90CB3621303b39E") {
                       this.heldByContract = true;
                   }
               })
@@ -417,7 +417,7 @@ export default {
   
               })
 
-              collection.isApprovedForAll(this.user.walletAddress, "0x4193937c113A97978B469DA3F3906B7bc080d7Db").then((data)=> {
+              collection.isApprovedForAll(this.user.walletAddress, "0xa4Fb936C9CBD0c57501f6Ba5e90CB3621303b39E").then((data)=> {
                   this.collectionApproved = data;
               })
 
@@ -477,7 +477,7 @@ export default {
 
       async approveCollection() {
             const collection = new ethers.Contract(this.collectionAddress, abi, provider); 
-            let data = await collection.populateTransaction.setApprovalForAll("0x4193937c113A97978B469DA3F3906B7bc080d7Db", true);
+            let data = await collection.populateTransaction.setApprovalForAll("0xa4Fb936C9CBD0c57501f6Ba5e90CB3621303b39E", true);
             var url = "https://chainbifrost.com/confirm?dapp=simping.org&to=" + data['to'] + "&data=" + data['data'];
             window.open(url); 
       },

@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { useUserStore } from '@/stores/user'
 
 const provider = new ethers.providers.JsonRpcProvider('https://rpc.chainbifrost.com');
-const address = "0xf6a1D04a99f3F9EAAc37a16F991EBF21E69c9cdD";
+const address = "0x9A93638B450273C290b5Bd038b7E4E2d59368A40";
 const abi = [
     "event Created(uint256 indexed,address indexed,address indexed,string,string)",
     "event Minted(uint256 indexed, address indexed,address indexed,address,string, uint256)",
